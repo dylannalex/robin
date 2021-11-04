@@ -64,19 +64,18 @@ class InteractiveSystem:
         ]
 
     def round_robin(
-        sorted_processes: list[Process], with_modification: bool = False
+        processes: list[Process], with_modification: bool = False
     ) -> tuple[ExecutionsTable]:
-
-        activated_processes = [sorted_processes[0]]
-        slept_processes = sorted_processes[1::]
+        activated_processes = find_first_processes(processes)
+        slept_processes = [p for p in processes if p not in activated_processes]
         table = ExecutionsTable()
-        time = sorted_processes[0].arrival_time
+        time = activated_processes[0].arrival_time
 
-        while activated_processes:
+        while slept_processes or activated_processes:
             # Execute process
             running_process = activated_processes[0]
             running_process.execute()
-            table.add_execution(time, running_process, activated_processes)
+            table.add_execution(time, running_process, activated_processes[1::])
 
             # Update activated_processes
             time += 1
@@ -86,7 +85,7 @@ class InteractiveSystem:
                 activated_processes = [*activated_processes[1::], running_process]
 
             # Check if a process activates
-            new_processes = get_new_processes(time, slept_processes)
+            new_processes, slept_processes = get_new_processes(time, slept_processes)
             activated_processes = [*activated_processes, *new_processes]
 
             if new_processes and with_modification:
