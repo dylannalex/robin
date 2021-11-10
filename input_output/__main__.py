@@ -1,7 +1,8 @@
-from input_output import units_converter, hdd
+from input_output import units_converter, hdd, assembler
+from os import system
 
 
-def get_input():
+def get_hdd_parameters():
     rpm = int(input("Enter rpm: "))
 
     sector_size = input("Enter sector size: ")
@@ -44,8 +45,30 @@ def get_input():
     )
 
 
+def get_assembler_parameters():
+    row = int(input("Enter row: "))
+    col = int(input("Enter col: "))
+    return row, col
+
+
+def wait(msg):
+    print(msg)
+    input("Press Enter to continue...")
+
+
 def main():
-    print(hdd.get_avarage_input_output_time(*get_input()))
+    while True:
+        try:
+            system("cls")
+            print("[1] Get avarage input/output time\n[2] Get assembler code\n\n")
+            opt = int(input("Enter option: "))
+            system("cls")
+            if opt == 1:
+                wait(hdd.get_avarage_input_output_time(*get_hdd_parameters()))
+            if opt == 2:
+                wait(assembler.show_character_on_screen(*get_assembler_parameters()))
+        except Exception as error:
+            wait(f"\nError: {error}")
 
 
 if __name__ == "__main__":
