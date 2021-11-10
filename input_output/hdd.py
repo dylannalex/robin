@@ -9,9 +9,9 @@ def get_avarage_input_output_time(
     overload_time: ms
     """
     rps = rpm / 60
-    avarage_rotation_time = (0.5 / rps) * 1000
-    transfer_time = sector_size / transfer_velocity
-    return f"{avarage_positioned_time + avarage_rotation_time + transfer_time + overload_time} ms"
+    avarage_rotation_time = round((0.5 / rps) * 1000, 2)
+    transfer_time = round(sector_size / transfer_velocity, 2)
+    return f"{round(round(avarage_positioned_time, 2) + avarage_rotation_time + transfer_time + round(overload_time, 2), 2)} ms"
 
 
 def main():
