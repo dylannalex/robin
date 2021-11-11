@@ -74,8 +74,16 @@ def assembly_menu():
                 string, row, col, add_comments
             )
         if opt == 3:
+            if input("Select color (y/n): ").strip().lower() == "y":
+                print(f"Colors = {list(assembly.COLORS.keys())}")
+                txt_color = input("Enter text color: ").strip().lower()
+                bg_color = input("Enter text background color: ").strip().lower()
+            else:
+                txt_color = "white"
+                bg_color = "black"
+
             result = assembly.show_string_on_screen_with_int10(
-                string, row, col, add_comments
+                string, row, col, txt_color, bg_color, add_comments
             )
 
     wait(result)
