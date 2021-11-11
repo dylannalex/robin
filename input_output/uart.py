@@ -1,6 +1,10 @@
 def get_line_control_register(
     dlab: bool, break_control: bool, parity: str, stop_bits: int, word_length: int
 ):
+
+    if word_length == 5 and stop_bits not in (1, "1.5"):
+        raise ValueError("Stop bits can only be 1 or 1.5 when word length is 5")
+
     lcr = "1" if dlab else "0"
     lcr += "1" if break_control else "0"
 
@@ -19,7 +23,7 @@ def get_line_control_register(
 
     if stop_bits == 1:
         lcr += "0"
-    elif stop_bits == 2:
+    elif stop_bits == 2 or stop_bits == "1.5":
         lcr += "1"
     else:
         raise ValueError("Invalid stop_bits value")

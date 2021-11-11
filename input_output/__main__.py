@@ -90,20 +90,24 @@ def assembly_menu():
 
 
 def uart_menu():
-    dlab_input = input(
-        "Enable DLL and DLM access (if speed performance is required, this is probably 'y')(y/n): "
-    )
-    if dlab_input.strip().lower() == "y":
+    dlab_input = input("Is speed performance required? (y/n): ").strip().lower()
+    if dlab_input == "y":
         dlab = True
     else:
         dlab = False
 
     break_control = (
-        True if input("Break control (y/n): ").strip().lower() == "y" else False
+        True
+        if input("Should the transmition have/show alerts? (y/n): ").strip().lower()
+        == "y"
+        else False
     )
     parity = input("Parity (odd/even/mark/space): ").strip().lower()
-    stop_bits = int(input("Stop bits (1/2): ").strip())
     word_length = int(input("Word length (5/6/7/8): ").strip())
+    if word_length == 5:
+        stop_bits = input("Stop bits (1/1.5): ").strip()
+    else:
+        stop_bits = int(input("Stop bits (1/2): ").strip())
     wait(
         uart.get_line_control_register(
             dlab, break_control, parity, stop_bits, word_length
