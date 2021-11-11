@@ -1,4 +1,4 @@
-from input_output import units_converter, hdd, assembly
+from input_output import units_converter, hdd, assembly, uart
 from os import system
 
 
@@ -81,6 +81,28 @@ def assembly_menu():
     wait(result)
 
 
+def uart_menu():
+    dlab_input = input(
+        "Enable DLL and DLM access (if speed performance is required, this is probably 'y')(y/n): "
+    )
+    if dlab_input.strip().lower() == "y":
+        dlab = True
+    else:
+        dlab = False
+
+    break_control = (
+        True if input("Break control (y/n): ").strip().lower() == "y" else False
+    )
+    parity = input("Parity (odd/even/mark/space): ").strip().lower()
+    stop_bits = int(input("Stop bits (1/2): ").strip())
+    word_length = int(input("Word length (5/6/7/8): ").strip())
+    wait(
+        uart.get_line_control_register(
+            dlab, break_control, parity, stop_bits, word_length
+        )
+    )
+
+
 def wait(msg):
     print(msg)
     input("Press Enter to continue...")
@@ -90,13 +112,20 @@ def main():
     while True:
         try:
             system("cls")
-            print("[1] Get avarage input/output time\n[2] Generate assembly code\n\n")
+            print(
+                """\t\tMENU
+[1] Get avarage input/output time
+[2] Generate assembly code
+[3] Get UART LCR register bits"""
+            )
             opt = int(input("Enter option: "))
             system("cls")
             if opt == 1:
                 wait(hdd.get_avarage_input_output_time(*get_hdd_parameters()))
             if opt == 2:
                 assembly_menu()
+            if opt == 3:
+                uart_menu()
         except Exception as error:
             wait(f"\nError: {error}")
 
