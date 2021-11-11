@@ -45,10 +45,40 @@ def get_hdd_parameters():
     )
 
 
-def get_assembler_parameters():
+def assembly_menu():
+    print(
+        """Select an option:
+[1] Show character on screen
+[2] Show string on screen with int21
+[3] Show string on screen with int10
+[4] Back
+"""
+    )
+    opt = int(input("Enter an option: "))
+
+    if opt not in (1, 2, 3):
+        return
+
+    system("cls")
     row = int(input("Enter row: "))
     col = int(input("Enter col: "))
-    return row, col
+    add_comments = (
+        True if input("Show comments (y/n): ").strip().lower() == "y" else False
+    )
+    if opt == 1:
+        result = assembly.show_character_on_screen(row, col, add_comments)
+    else:
+        string = input("Enter string: ")
+        if opt == 2:
+            result = assembly.show_string_on_screen_with_int21(
+                string, row, col, add_comments
+            )
+        if opt == 3:
+            result = assembly.show_string_on_screen_with_int10(
+                string, row, col, add_comments
+            )
+
+    wait(result)
 
 
 def wait(msg):
@@ -60,13 +90,13 @@ def main():
     while True:
         try:
             system("cls")
-            print("[1] Get avarage input/output time\n[2] Get assembler code\n\n")
+            print("[1] Get avarage input/output time\n[2] Generate assembly code\n\n")
             opt = int(input("Enter option: "))
             system("cls")
             if opt == 1:
                 wait(hdd.get_avarage_input_output_time(*get_hdd_parameters()))
             if opt == 2:
-                wait(assembly.show_character_on_screen(*get_assembler_parameters()))
+                assembly_menu()
         except Exception as error:
             wait(f"\nError: {error}")
 
