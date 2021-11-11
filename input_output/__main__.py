@@ -1,4 +1,4 @@
-from input_output import units_converter, hdd, assembler
+from input_output import units_converter, hdd, assembly
 from os import system
 
 
@@ -66,7 +66,7 @@ def main():
             if opt == 1:
                 wait(hdd.get_avarage_input_output_time(*get_hdd_parameters()))
             if opt == 2:
-                wait(assembler.show_character_on_screen(*get_assembler_parameters()))
+                wait(assembly.show_character_on_screen(*get_assembler_parameters()))
         except Exception as error:
             wait(f"\nError: {error}")
 
