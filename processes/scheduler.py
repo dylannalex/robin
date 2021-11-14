@@ -58,10 +58,15 @@ class ExecutionsTable:
 
 class InteractiveSystem:
     def get_wait_time(table: ExecutionsTable) -> list[tuple[str, int]]:
-        return [
+        processes_wait_time = [
             (p.name, table.get_first_execution_time(p.name) - p.arrival_time)
             for p in table.processes
         ]
+        avarage = sum([wait_time[1] for wait_time in processes_wait_time]) / len(
+            processes_wait_time
+        )
+
+        return [processes_wait_time, f"Avarage: {avarage}"]
 
     def round_robin(
         processes: list[Process], with_modification: bool = False
@@ -96,5 +101,41 @@ class InteractiveSystem:
                     len(activated_processes) - 1,
                     len(activated_processes) - 2,
                 )
+
+        return table
+
+
+class BatchSystem:
+    def sort_processes_by_total_executions(processes: list[Process]):
+        return sorted(processes, key=lambda p: p.total_executions)
+
+    def shortest_job_first(processes: list[Process]):
+        first_processes = find_first_processes(processes)
+        first_processes_sorted = BatchSystem.sort_processes_by_total_executions(
+            first_processes
+        )
+        running_process = first_processes_sorted[0]
+        activated_processes = first_processes_sorted[1::]
+        slept_processes = [p for p in processes if p not in first_processes]
+        table = ExecutionsTable()
+        time = running_process.arrival_time
+
+        while slept_processes or running_process:
+            # Execute process
+            running_process.execute()
+            table.add_execution(time, running_process, activated_processes)
+            time += 1
+
+            # Find new processes
+            new_processes, slept_processes = get_new_processes(time, slept_processes)
+            activated_processes = BatchSystem.sort_processes_by_total_executions(
+                [*activated_processes, *new_processes]
+            )
+            if running_process.has_finished():
+                if activated_processes:
+                    running_process = activated_processes[0]
+                    activated_processes.pop(0)
+                else:
+                    running_process = None
 
         return table
