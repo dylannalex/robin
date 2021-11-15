@@ -106,14 +106,9 @@ class InteractiveSystem:
 
 
 class BatchSystem:
-    def sort_processes_by_total_executions(processes: list[Process]):
-        return sorted(processes, key=lambda p: p.total_executions)
-
     def shortest_job_first(processes: list[Process]):
         first_processes = find_first_processes(processes)
-        first_processes_sorted = BatchSystem.sort_processes_by_total_executions(
-            first_processes
-        )
+        first_processes_sorted = sort_processes_by_total_executions(first_processes)
         running_process = first_processes_sorted[0]
         activated_processes = first_processes_sorted[1::]
         slept_processes = [p for p in processes if p not in first_processes]
@@ -128,9 +123,78 @@ class BatchSystem:
 
             # Find new processes
             new_processes, slept_processes = get_new_processes(time, slept_processes)
-            activated_processes = BatchSystem.sort_processes_by_total_executions(
+            activated_processes = sort_processes_by_total_executions(
                 [*activated_processes, *new_processes]
             )
+            if running_process.has_finished():
+                if activated_processes:
+                    running_process = activated_processes[0]
+                    activated_processes.pop(0)
+                else:
+                    running_process = None
+
+        return table
+
+    def first_come_first_served(processes: list[Process]):
+        first_processes = find_first_processes(processes)
+        running_process = first_processes[0]
+        activated_processes = first_processes[1::]
+        slept_processes = [p for p in processes if p not in first_processes]
+        table = ExecutionsTable()
+        time = running_process.arrival_time
+
+        while activated_processes or running_process:
+            running_process.execute()
+            table.add_execution(time, running_process, activated_processes)
+            time += 1
+
+            activated_processes += get_new_processes(time, slept_processes)[0]
+
+            if running_process.has_finished():
+                if activated_processes:
+                    running_process = activated_processes[0]
+                    activated_processes.pop(0)
+                else:
+                    running_process = None
+
+        return table
+
+    def shortest_remaining_time_next(processes: list[Process]):
+        first_processes = find_first_processes(processes)
+        first_processes_sorted = sort_processes_by_total_executions(first_processes)
+        running_process = first_processes_sorted[0]
+        activated_processes = first_processes_sorted[1::]
+        slept_processes = [p for p in processes if p not in first_processes]
+        table = ExecutionsTable()
+        time = running_process.arrival_time
+
+        while slept_processes or running_process:
+            # Execute process
+            running_process.execute()
+            table.add_execution(time, running_process, activated_processes)
+            time += 1
+
+            # Find new processes
+            new_processes, slept_processes = get_new_processes(time, slept_processes)
+            new_processes_sorted = sort_processes_by_total_executions(new_processes)
+
+            # If a new process have less remaining executions than the running
+            # process, start executing the new process:
+            if new_processes:
+                if (
+                    new_processes_sorted[0].remaining_executions
+                    < running_process.remaining_executions
+                ):
+                    activated_processes.insert(0, running_process)
+                    running_process = new_processes_sorted[0]
+                    new_processes_sorted.pop(0)
+
+            # Update activated proccesses
+            activated_processes = sort_processes_by_total_executions(
+                [*activated_processes, *new_processes_sorted]
+            )
+
+            # Check if running process has finished
             if running_process.has_finished():
                 if activated_processes:
                     running_process = activated_processes[0]
