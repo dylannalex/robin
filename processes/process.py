@@ -15,6 +15,10 @@ class Process:
     def execute(self) -> None:
         self.executions += 1
 
+    @property
+    def remaining_executions(self):
+        return self.total_executions - self.executions
+
 
 def sort_processes_by_arrival_time(processes: list[Process]):
     """
@@ -59,3 +63,11 @@ def find_first_processes(processes: list[Process]):
         first_processes.append(process)
 
     return first_processes
+
+
+def sort_processes_by_total_executions(processes: list[Process]):
+    return sorted(processes, key=lambda p: p.total_executions)
+
+
+def get_shortest_process(processes: list[Process]):
+    return sort_processes_by_total_executions(processes)[0]
