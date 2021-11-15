@@ -20,6 +20,16 @@ class Process:
         return self.total_executions - self.executions
 
 
+class InteractiveProcess(Process):
+    def __init__(self, name, arrival_time, total_executions):
+        super().__init__(name, arrival_time, total_executions)
+        self.consecutive_executions = 0
+
+    def execute(self) -> None:
+        self.executions += 1
+        self.consecutive_executions += 1
+
+
 def sort_processes_by_arrival_time(processes: list[Process]):
     """
     sorts a given a list of Process instances by the arrival

@@ -69,9 +69,10 @@ class InteractiveSystem:
         return [processes_wait_time, f"Avarage: {avarage}"]
 
     def round_robin(
-        processes: list[Process], with_modification: bool = False
+        processes: list[InteractiveProcess], time_slice, with_modification: bool = False
     ) -> tuple[ExecutionsTable]:
         activated_processes = find_first_processes(processes)
+        running_process = activated_processes[0]
         slept_processes = [p for p in processes if p not in activated_processes]
         table = ExecutionsTable()
         time = activated_processes[0].arrival_time
@@ -86,7 +87,8 @@ class InteractiveSystem:
             time += 1
             if running_process.has_finished():
                 activated_processes.pop(0)
-            else:
+            elif running_process.consecutive_executions == time_slice:
+                running_process.consecutive_executions = 0
                 activated_processes = [*activated_processes[1::], running_process]
 
             # Check if a process activates
@@ -106,6 +108,17 @@ class InteractiveSystem:
 
 
 class BatchSystem:
+    def get_wait_time(table: ExecutionsTable) -> list[tuple[str, int]]:
+        processes_wait_time = [
+            (p.name, table.get_first_execution_time(p.name) - p.arrival_time)
+            for p in table.processes
+        ]
+        avarage = sum([wait_time[1] for wait_time in processes_wait_time]) / len(
+            processes_wait_time
+        )
+
+        return [processes_wait_time, f"Avarage: {avarage}"]
+
     def shortest_job_first(processes: list[Process]):
         first_processes = find_first_processes(processes)
         first_processes_sorted = sort_processes_by_total_executions(first_processes)
