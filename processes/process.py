@@ -7,20 +7,20 @@ class Process:
         self.arrival_time = arrival_time
         self.total_executions = total_executions
         self.finish_time = 0
-        self.executions = 0
+        self.current_executions = 0
         self.wait_time = 0
 
     def has_finished(self) -> bool:
-        if self.executions == self.total_executions:
+        if self.current_executions == self.total_executions:
             return True
         return False
 
     def execute(self) -> None:
-        self.executions += 1
+        self.current_executions += 1
 
     @property
     def remaining_executions(self):
-        return self.total_executions - self.executions
+        return self.total_executions - self.current_executions
 
 
 class InteractiveProcess(Process):
@@ -29,7 +29,7 @@ class InteractiveProcess(Process):
         self.consecutive_executions = 0
 
     def execute(self) -> None:
-        self.executions += 1
+        self.current_executions += 1
         self.consecutive_executions += 1
 
 
@@ -84,8 +84,8 @@ def sort_processes_by_total_executions(processes: list[Process]):
 
 def sort_processes_by_remaining_executions(processes: list[Process]):
     """
-    Sorts processes by their remaining executions. If two processes have the
-    same remaining executions, the processes that arrives first has priority
+    Sorts processes by their remaining current_executions. If two processes have the
+    same remaining current_executions, the processes that arrives first has priority
     """
     return sorted(processes, key=attrgetter("remaining_executions", "arrival_time"))
 

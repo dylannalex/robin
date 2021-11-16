@@ -13,7 +13,8 @@ class ExecutionsTable:
             {
                 "time": time,
                 "process_running": process.name,
-                "executions_left": process.total_executions - process.executions,
+                "executions_left": process.total_executions
+                - process.current_executions,
                 "waiting_processes": get_processes_names(waiting_processes),
             }
         )
@@ -210,7 +211,7 @@ class BatchSystem:
             new_processes, slept_processes = get_new_processes(time, slept_processes)
             new_processes_sorted = sort_processes_by_total_executions(new_processes)
 
-            # If a new process have less remaining executions than the running
+            # If a new process have less remaining current_executions than the running
             # process, start executing the new process:
             if new_processes:
                 if (
