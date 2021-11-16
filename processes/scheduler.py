@@ -97,6 +97,21 @@ class InteractiveSystem:
 
         return [processes_wait_time, f"Avarage: {avarage}"]
 
+    def get_wait_time2(table: ExecutionsTable) -> list[tuple[str, int]]:
+        wait_time = [
+            (
+                p.name,
+                table.get_last_execution_time(p.name)
+                - p.arrival_time
+                + 1
+                - p.total_executions,
+            )
+            for p in table.processes
+        ]
+        avarage = sum([wait_time[1] for wait_time in wait_time]) / len(wait_time)
+
+        return [wait_time, f"Avarage: {avarage}"]
+
     def round_robin(
         processes: list[InteractiveProcess], time_slice, with_modification: bool = False
     ) -> tuple[ExecutionsTable]:
