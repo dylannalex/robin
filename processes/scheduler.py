@@ -52,11 +52,30 @@ class ExecutionsTable:
             if process_name in execution["process_running"]:
                 return execution["time"]
 
+    def get_last_execution_time(self, process_name: str) -> int:
+        for execution in self.executions:
+            if (
+                process_name in execution["process_running"]
+                and execution["executions_left"] == 0
+            ):
+                return execution["time"]
+
     def __len__(self) -> int:
         return len(self.executions)
 
 
 class InteractiveSystem:
+    def get_return_time(table: ExecutionsTable) -> list[tuple[str, int]]:
+        processes_return_time = [
+            (p.name, table.get_last_execution_time(p.name) - p.arrival_time + 1)
+            for p in table.processes
+        ]
+        avarage = sum([wait_time[1] for wait_time in processes_return_time]) / len(
+            processes_return_time
+        )
+
+        return [processes_return_time, f"Avarage: {avarage}"]
+
     def get_wait_time(table: ExecutionsTable) -> list[tuple[str, int]]:
         processes_wait_time = [
             (p.name, table.get_first_execution_time(p.name) - p.arrival_time)
