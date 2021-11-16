@@ -138,15 +138,15 @@ class InteractiveSystem:
 
 class BatchSystem:
     def get_wait_time(table: ExecutionsTable) -> list[tuple[str, int]]:
-        processes_wait_time = [
-            (p.name, table.get_first_execution_time(p.name) - p.arrival_time)
+        processes_return_time = [
+            (p.name, table.get_last_execution_time(p.name) - p.arrival_time + 1)
             for p in table.processes
         ]
-        avarage = sum([wait_time[1] for wait_time in processes_wait_time]) / len(
-            processes_wait_time
+        avarage = sum([wait_time[1] for wait_time in processes_return_time]) / len(
+            processes_return_time
         )
 
-        return [processes_wait_time, f"Avarage: {avarage}"]
+        return [processes_return_time, f"Avarage: {avarage}"]
 
     def shortest_job_first(processes: list[Process]):
         first_processes = find_first_processes(processes)
