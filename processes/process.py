@@ -1,3 +1,6 @@
+from operator import attrgetter
+
+
 class Process:
     def __init__(self, name, arrival_time, total_executions):
         self.name = name
@@ -77,6 +80,14 @@ def find_first_processes(processes: list[Process]):
 
 def sort_processes_by_total_executions(processes: list[Process]):
     return sorted(processes, key=lambda p: p.total_executions)
+
+
+def sort_processes_by_remaining_executions(processes: list[Process]):
+    """
+    Sorts processes by their remaining executions. If two processes have the
+    same remaining executions, the processes that arrives first has priority
+    """
+    return sorted(processes, key=attrgetter("remaining_executions", "arrival_time"))
 
 
 def get_shortest_process(processes: list[Process]):
