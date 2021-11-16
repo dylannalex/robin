@@ -222,10 +222,9 @@ class BatchSystem:
                     new_processes_sorted.pop(0)
 
             # Update activated proccesses
-            activated_processes = sort_processes_by_total_executions(
+            activated_processes = sort_processes_by_remaining_executions(
                 [*activated_processes, *new_processes_sorted]
             )
-
             # Check if running process has finished
             if running_process.has_finished():
                 if activated_processes:
