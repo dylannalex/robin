@@ -1,13 +1,16 @@
-from input_output import units_converter, hdd, assembly, uart
+from os_utn.input_output import hdd, assembly, uart
+from os_utn.tools import units_converter
 from os import system
 
 
 def get_hdd_parameters():
+    print("Valid size units: GB, MB, KB, B, b (e.g. 1MB, 6KB, 2B, ...)")
+    print("Valid velocity units: x/s, x/ms (e.g. 1MB/ms, 6KB/s, 2B/ms, ...)\n\n")
     rpm = int(input("Enter rpm: "))
 
     sector_size = input("Enter sector size: ")
     sector_size_n, sector_size_unit = units_converter.decompose_number(sector_size)
-    converted_sector_size = units_converter.convert_size_unit(
+    converted_sector_size = units_converter.convert_size_unit_to_bytes(
         sector_size_n, sector_size_unit
     )
 
@@ -15,7 +18,7 @@ def get_hdd_parameters():
     transfer_velocity_n, transfer_velocity_unit = units_converter.decompose_number(
         transfer_velocity
     )
-    converted_transfer_velocity = units_converter.convert_transfer_velocity(
+    converted_transfer_velocity = units_converter.convert_transfer_velocity_to_bytes_ms(
         transfer_velocity_n, *transfer_velocity_unit.split("/")
     )
 
@@ -24,7 +27,7 @@ def get_hdd_parameters():
         avarage_positioned_time_n,
         avarage_positioned_time_unit,
     ) = units_converter.decompose_number(avarage_positioned_time)
-    converted_avarage_positioned_time = units_converter.convert_size_unit(
+    converted_avarage_positioned_time = units_converter.convert_size_unit_to_bytes(
         avarage_positioned_time_n, avarage_positioned_time_unit
     )
 
@@ -32,7 +35,7 @@ def get_hdd_parameters():
     overload_time_n, overload_time_unit = units_converter.decompose_number(
         overload_time
     )
-    converted_overload_time = units_converter.convert_size_unit(
+    converted_overload_time = units_converter.convert_size_unit_to_bytes(
         overload_time_n, overload_time_unit
     )
 

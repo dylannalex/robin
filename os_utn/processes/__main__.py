@@ -1,4 +1,4 @@
-from processes import menu
+from os_utn.processes import menu
 
 
 if __name__ == "__main__":

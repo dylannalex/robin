@@ -1,5 +1,5 @@
-from memory import paging
-from memory import units_converter
+from os_utn.memory import paging
+from os_utn.tools import units_converter
 from os import system
 
 

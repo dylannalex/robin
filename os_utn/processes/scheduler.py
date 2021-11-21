@@ -1,4 +1,4 @@
-from processes.process import *
+from os_utn.processes.process import *
 
 
 class ExecutionsTable:
