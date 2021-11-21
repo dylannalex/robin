@@ -17,7 +17,9 @@ ALGORITHMS = """Select one of the following algorithms:
 
 [1] Round robin
 [2] SJF (shortest job fist)
-[3] Back
+[3] FCFS (First come first served)
+[4] SRTN (Shortest remaining time next)
+[5] Back
 """
 
 
@@ -93,9 +95,7 @@ def main():
         opt = menu(OPTIONS)
         system("cls")
         if opt == 0:
-            print(
-                "FORMAT: \t\tprocess_name-arrival_time-total_executions|process_name-arrival_time-total_executions|..."
-            )
+            print("FORMAT: \t\tprocessName-arrivalTime-totalExecutions|...|...")
             print("EXAMPLE:\t\tA-1-5|B-2-6|C-3-8\n\n")
             processes_str = input("Enter processes: ")
             processes = parse_processes(processes_str)
@@ -137,19 +137,36 @@ def main():
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(
-                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time(table)}"
+                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time(table)} [LAST METHOD EXPLAINED BY TEACHER]"
                     )
-                    stop()
+                    print(
+                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time2(table)} [METHOD USED IN EXAMS]"
+                    )
 
                 if opt == 2:
                     table = scheduler.BatchSystem.shortest_job_first(processes)
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
-                    stop()
 
                 if opt == 3:
+                    table = scheduler.BatchSystem.first_come_first_served(processes)
+                    table.show_table()
+                    print(f"\n\nExecution string: {table.get_execution_string()}")
+                    print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
+
+                if opt == 4:
+                    table = scheduler.BatchSystem.shortest_remaining_time_next(
+                        processes
+                    )
+                    table.show_table()
+                    print(f"\n\nExecution string: {table.get_execution_string()}")
+                    print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
+
+                if opt == 5:
                     break
+
+                stop()
 
 
 if __name__ == "__main__":
