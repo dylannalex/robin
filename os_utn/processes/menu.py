@@ -77,9 +77,10 @@ def parse_processes(processes_string: str) -> list[process.InteractiveProcess]:
 
 def remove_process(processes) -> list[process.Process]:
     process_name = input("Enter process name: ")
-    if processes in process.get_processes_names(processes):
+    if process_name in process.get_processes_names(processes):
         if confirm(f"Are you sure you want to delete {process_name}? (y/n): "):
             return [p for p in processes if p.name != process_name]
+    return processes
 
 
 def show_processes(processes: list[process.Process]) -> None:
