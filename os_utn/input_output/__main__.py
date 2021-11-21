@@ -51,7 +51,7 @@ def get_hdd_parameters():
 def assembly_menu():
     print(
         """Select an option:
-[1] Show character on screen
+[1] Show character on screen (from keyboard)
 [2] Show string on screen with int21
 [3] Show string on screen with int10
 [4] Back
@@ -65,11 +65,9 @@ def assembly_menu():
     system("cls")
     row = int(input("Enter row: "))
     col = int(input("Enter col: "))
-    add_comments = (
-        True if input("Show comments (y/n): ").strip().lower() == "y" else False
-    )
+    add_comments = False
     if opt == 1:
-        result = assembly.show_character_on_screen(row, col, add_comments)
+        result = assembly.show_character_from_keyboard_on_screen(row, col)
     else:
         string = input("Enter string: ")
         if opt == 2:

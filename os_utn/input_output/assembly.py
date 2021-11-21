@@ -28,29 +28,16 @@ def fix_length(n: str, length: int):
     return n
 
 
-def show_character_on_screen(row, col, add_comments=True):
-    if add_comments:
-        return f"""
-ORG 100h
-MOV AH, 00H
-INT 16H       \t; Keyboard service: reads only one character
-MOV DH, {row} \t; row {row}
-MOV DL, {col} \t; column {col}
-MOV BH, 00    \t; page number 0
-MOV AH, 02
-INT 10H    \t; Video service
-MOV DL, AL \t; Moves character to DL
-INT 21H    \t; MSDOS service: prints character (stored in DL) on screen
-RET"""
-
+def show_character_from_keyboard_on_screen(row, col):
     return f"""
 ORG 100H
 MOV AH, 00H
-INT 16H 
+INT 16H
 MOV DH, {row}
 MOV DL, {col}
 MOV BH, 00
-INT 10H  
+MOV AH, 02
+INT 10H
 MOV DL, AL
 INT 21H
 RET"""
