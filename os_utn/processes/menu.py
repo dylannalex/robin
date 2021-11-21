@@ -3,14 +3,13 @@ from os_utn.processes import process, scheduler
 from os import system
 
 
-OPTIONS = """Select one of the following options:
-
-[0] Add processes string
+OPTIONS = """[0] Add processes string
 [1] Add process
 [2] Remove process
 [3] Remove all processes
 [4] Show processes
 [5] Scheduler algorithms
+[6] Exit
 """
 
 ALGORITHMS = """Select one of the following algorithms:
@@ -37,6 +36,7 @@ def menu(options: str) -> int:
     while True:
         try:
             system("cls")
+            print("\t\tPROCESSES MENU\n")
             print(options)
             print(warning)
             return int(input("Enter option: "))
@@ -99,6 +99,9 @@ def main():
             print("EXAMPLE:\t\tA-1-5|B-2-6|C-3-8\n\n")
             processes_str = input("Enter processes: ")
             processes = parse_processes(processes_str)
+
+        if opt == 6:
+            return
 
         if opt == 1:
             process = get_process()

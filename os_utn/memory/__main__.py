@@ -12,13 +12,13 @@ def main():
     while True:
         system("cls")
         print(
-            """\t\tPaging Menu:\n
-    [1] Get logical/virtual address length (in bits)
-    [2] Get physical/real address length (in bits)
-    [3] Get physical/real address (given a virtual address and the page size)
-    """
+            """\t\tMEMORY MENU\n
+[1] Get logical/virtual address length (in bits)
+[2] Get physical/real address length (in bits)
+[3] Get physical/real address (given a virtual address and the page size)
+[4] Exit"""
         )
-        opt = input("Enter an option: ")
+        opt = input("\nEnter an option: ")
         system("cls")
         if opt == "1":
             pages = int(input("Number of pages: "))
@@ -41,6 +41,9 @@ def main():
             wait(
                 f"Real direction is: {paging.get_real_address(virtual_address, page_size)}"
             )
+
+        if opt == "4":
+            return
 
 
 if __name__ == "__main__":

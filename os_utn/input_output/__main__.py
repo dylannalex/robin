@@ -128,10 +128,11 @@ def main():
         try:
             system("cls")
             print(
-                """\t\tMENU
+                """\t\tINPUT/OUTPUT MENU\n
 [1] Get avarage input/output time
 [2] Generate assembly code
-[3] Get UART LCR register bits"""
+[3] Get UART LCR register bits
+[4] Exit"""
             )
             opt = int(input("Enter option: "))
             system("cls")
@@ -141,6 +142,8 @@ def main():
                 assembly_menu()
             if opt == 3:
                 uart_menu()
+            if opt == 4:
+                return
         except Exception as error:
             wait(f"\nError: {error}")
 
