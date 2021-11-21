@@ -165,10 +165,13 @@ def main():
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(
-                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time(table)} [LAST METHOD EXPLAINED BY TEACHER]"
+                        f"\nWait time: {scheduler.InteractiveSystem.get_wait_time(table)}\t(LAST METHOD EXPLAINED BY TEACHER)"
                     )
                     print(
-                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time2(table)} [METHOD USED IN EXAMS]"
+                        f"Wait time: {scheduler.InteractiveSystem.get_wait_time2(table)}\t(METHOD USED IN EXAMS)"
+                    )
+                    print(
+                        f"\n\nReturn time: {scheduler.InteractiveSystem.get_return_time(table)}"
                     )
 
                 elif opt == 2:
