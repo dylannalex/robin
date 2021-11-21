@@ -113,8 +113,15 @@ class InteractiveSystem:
         return [wait_time, f"Avarage: {avarage}"]
 
     def round_robin(
-        processes: list[InteractiveProcess], time_slice, with_modification: bool = False
+        processes: list[InteractiveProcess],
+        time_slice,
+        with_modification: bool = False,
+        with_modification_change_times: list[int] = None,
     ) -> tuple[ExecutionsTable]:
+        """
+        with_modification state can change over time. with_modification_changes is a
+        list the value time instants where the with_modification value changes.
+        """
         queue = find_first_processes(processes)
         running_process = queue[0]
         slept_processes = [p for p in processes if p not in queue]
@@ -127,8 +134,19 @@ class InteractiveSystem:
             running_process.execute()
             table.add_execution(time, running_process, queue[1::])
 
-            # Update queue
+            # Update time
             time += 1
+            if with_modification_change_times:
+                for change_time in with_modification_change_times:
+                    if time == change_time:
+                        if with_modification == True:
+                            with_modification = False
+                        else:
+                            with_modification = True
+                        with_modification_change_times.remove(time)
+                        break
+
+            # Update queue
             if running_process.has_finished():
                 queue.pop(0)
             elif running_process.consecutive_executions == time_slice:

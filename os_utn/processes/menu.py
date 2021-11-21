@@ -136,9 +136,30 @@ def main():
                         if input("With modification? (y/n): ").strip() == "y"
                         else False
                     )
+                    with_modification_change_times = []
+                    while True:
+                        ask_new_with_modification = (
+                            input("Add new 'with modification' change? (y/n): ")
+                            .strip()
+                            .lower()
+                        )
+                        if ask_new_with_modification == "y":
+                            try:
+                                with_modification_change_times.append(
+                                    int(input("Add change time: "))
+                                )
+                            except Exception as e:
+                                print(f"Oops, something went wrong: {e}")
+                                stop()
+                        if ask_new_with_modification == "n":
+                            break
+
                     system("cls")
                     table = scheduler.InteractiveSystem.round_robin(
-                        processes, time_slice, with_modification
+                        processes,
+                        time_slice,
+                        with_modification,
+                        with_modification_change_times,
                     )
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
