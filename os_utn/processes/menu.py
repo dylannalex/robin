@@ -89,6 +89,11 @@ def show_processes(processes: list[process.Process]) -> None:
         )
 
 
+def reset_attributes(processes: list[process.Process]):
+    for process in processes:
+        process.reset()
+
+
 def main():
     processes = []
     while True:
@@ -121,6 +126,7 @@ def main():
 
         if opt == 5:
             while True:
+                reset_attributes(processes)
                 opt = menu(ALGORITHMS)
                 system("cls")
                 if opt == 1:
@@ -143,19 +149,19 @@ def main():
                         f"Wait time: {scheduler.InteractiveSystem.get_wait_time2(table)} [METHOD USED IN EXAMS]"
                     )
 
-                if opt == 2:
+                elif opt == 2:
                     table = scheduler.BatchSystem.shortest_job_first(processes)
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
 
-                if opt == 3:
+                elif opt == 3:
                     table = scheduler.BatchSystem.first_come_first_served(processes)
                     table.show_table()
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
 
-                if opt == 4:
+                elif opt == 4:
                     table = scheduler.BatchSystem.shortest_remaining_time_next(
                         processes
                     )
@@ -163,7 +169,7 @@ def main():
                     print(f"\n\nExecution string: {table.get_execution_string()}")
                     print(f"Wait time: {scheduler.BatchSystem.get_wait_time(table)}")
 
-                if opt == 5:
+                elif opt == 5:
                     break
 
                 stop()
