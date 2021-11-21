@@ -6,9 +6,7 @@ class Process:
         self.name = name
         self.arrival_time = arrival_time
         self.total_executions = total_executions
-        self.finish_time = 0
-        self.current_executions = 0
-        self.wait_time = 0
+        self.reset()
 
     def has_finished(self) -> bool:
         if self.current_executions == self.total_executions:
@@ -17,6 +15,11 @@ class Process:
 
     def execute(self) -> None:
         self.current_executions += 1
+
+    def reset(self) -> None:
+        self.finish_time = 0
+        self.current_executions = 0
+        self.wait_time = 0
 
     @property
     def remaining_executions(self):
