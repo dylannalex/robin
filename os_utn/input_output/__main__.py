@@ -91,7 +91,13 @@ def assembly_menu():
 
 
 def uart_menu():
-    dlab_input = input("Is speed performance required? (y/n): ").strip().lower()
+    dlab_input = (
+        input(
+            "Is speed performance required (Is Latches divisors access needed)? (y/n): "
+        )
+        .strip()
+        .lower()
+    )
     if dlab_input == "y":
         dlab = True
     else:
@@ -103,7 +109,7 @@ def uart_menu():
         == "y"
         else False
     )
-    parity = input("Parity (odd/even/mark/space): ").strip().lower()
+    parity = input("Parity (odd/even/mark/space/no parity): ").strip().lower()
     word_length = int(input("Word length (5/6/7/8): ").strip())
     if word_length == 5:
         stop_bits = input("Stop bits (1/1.5): ").strip()
