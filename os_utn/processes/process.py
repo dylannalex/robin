@@ -35,6 +35,12 @@ class InteractiveProcess(Process):
         self.current_executions += 1
         self.consecutive_executions += 1
 
+    def reset(self) -> None:
+        self.finish_time = 0
+        self.current_executions = 0
+        self.consecutive_executions = 0
+        self.wait_time = 0
+
 
 def sort_processes_by_arrival_time(processes: list[Process]):
     """
