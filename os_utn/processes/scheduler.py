@@ -134,7 +134,7 @@ class InteractiveSystem:
             running_process.execute()
             table.add_execution(time, running_process, queue[1::])
 
-            # Update time
+            # Update time and "with_modification" state
             time += 1
             if with_modification_change_times:
                 for change_time in with_modification_change_times:
@@ -146,25 +146,25 @@ class InteractiveSystem:
                         with_modification_change_times.remove(time)
                         break
 
-            # Update queue
-            if running_process.has_finished():
-                queue.pop(0)
-            elif running_process.consecutive_executions == time_slice:
-                running_process.consecutive_executions = 0
-                queue = [*queue[1::], running_process]
-
             # Check if a process activates
             new_processes, slept_processes = get_new_processes(time, slept_processes)
-            queue = [*queue, *new_processes]
 
-            if new_processes and with_modification:
-                # In round robin with modification, the new process has
-                # priority over the process that just finished running
-                swap_processes(
-                    queue,
-                    len(queue) - 1,
-                    len(queue) - 2,
-                )
+            # Update Queue
+            if running_process.has_finished():
+                queue.pop(0)
+                queue = [*queue, *new_processes]
+
+            elif running_process.consecutive_executions == time_slice:
+                running_process.consecutive_executions = 0
+
+                if with_modification:
+                    queue = [*queue[1::], *new_processes, running_process]
+
+                if not with_modification:
+                    queue = [*queue[1::], running_process, *new_processes]
+
+            else:
+                queue = [*queue, *new_processes]
 
         return table
 
