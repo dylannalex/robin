@@ -134,7 +134,7 @@ def main():
                     time_slice = int(input("Enter time slice: "))
                     with_modification = (
                         True
-                        if input("With modification? (y/n): ").strip() == "y"
+                        if input("With modification? (y/n): ").strip().lower() == "y"
                         else False
                     )
                     with_modification_change_times = []
