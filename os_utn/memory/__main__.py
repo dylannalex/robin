@@ -38,8 +38,10 @@ def main():
                     input("Enter page size (see valid units above): ").strip()
                 )
             )
+            page_number = paging.get_page_number(virtual_address, page_size)
+            page_frame = int(input(f"Page number is {page_number}. Enter page frame: "))
             wait(
-                f"Real direction is: {paging.get_real_address(virtual_address, page_size)}"
+                f"Real direction is: {paging.get_real_address(virtual_address, page_size, page_frame)}"
             )
 
         if opt == "4":
