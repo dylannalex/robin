@@ -1,5 +1,5 @@
 from typing import Union
-from os_utn.processes import process, scheduler
+from os_utn.operating_system.processes import process, scheduler
 from os import system
 
 

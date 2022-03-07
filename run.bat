@@ -9,7 +9,7 @@ echo [2] Memory
 echo [3] Input/Output
 echo.
 set /p option="Enter option: "
-if %option%==1 (python -m os_utn.processes)
-if %option%==2 (python -m os_utn.memory)
-if %option%==3 (python -m os_utn.input_output)
+if %option%==1 (python -m os_utn.operating_system.processes)
+if %option%==2 (python -m os_utn.operating_system.memory)
+if %option%==3 (python -m os_utn.operating_system.input_output)
 goto :while

@@ -1,5 +1,5 @@
-from os_utn.input_output import hdd, assembly, uart
-from os_utn.tools import units_converter
+from os_utn.operating_system.input_output import hdd, assembly, uart
+from os_utn.operating_system.tools import units_converter
 from os import system
 
 
