@@ -32,6 +32,33 @@ class ExecutionsTable:
     def _sort_table(self) -> None:
         self.executions = sorted(self.executions, key=lambda d: d["time"])
 
+    @property
+    def executions_intervals(self):
+        executions_intervals = []
+
+        last_process_running = self.executions[0]["process_running"]
+        current_execution = {
+            "process": self.executions[0]["process_running"],
+            "initial_time": self.executions[0]["time"],
+        }
+        for execution in self.executions:
+            if last_process_running != execution["process_running"]:
+                # Add final time to current execution
+                current_execution["final_time"] = execution["time"] - 1
+                executions_intervals.append(current_execution)
+
+                # Update variables
+                current_execution = {
+                    "process": execution["process_running"],
+                    "initial_time": execution["time"],
+                }
+                last_process_running = execution["process_running"]
+
+        current_execution["final_time"] = execution["time"] - 1
+        executions_intervals.append(current_execution)
+
+        return executions_intervals
+
     def show_table(self, show_remaining_executions=False) -> None:
         for execution in self.executions:
             time = execution["time"]
