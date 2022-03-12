@@ -1,0 +1,1 @@
+web: python -m os_utn.tgm
