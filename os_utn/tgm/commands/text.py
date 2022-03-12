@@ -63,6 +63,7 @@ ROUND_ROBBIN_BUTTON = "Round Robin"
 SJF_BUTTON = "SJF"
 FCFS_BUTTON = "FCFS"
 SRTN_BUTTON = "SRTN"
+SUPPORT_ME_BUTTON = f"Repositorio en GitHub {emojis.GRINNING_CAT_WITH_SMILING_EYES}"
 
 
 #
@@ -149,3 +150,20 @@ Ahora te toca a vos {emojis.SMILING_FACE_WITH_TEAR}\\. Mandame los datos de tu\
  ejercicio \\(como te mostré arriba {emojis.UP_POINTING_INDEX}\\) para continuar\\!
 """,
 ]
+
+#
+# Results
+#
+SUPPORT_ME_MESSAGE = f"""
+Si logré ayudarte mi creador agradecería mucho si le das una estrellita {emojis.STAR}\
+ y un follow en GitHub {emojis.SMILING_FACE_WITH_OPEN_HANDS}
+
+Para volver al menú principal utiliza el comando /start
+"""
+
+PROCESSES_SCHEDULING_RESULT = (
+    lambda scheduling_algo: f"""
+Este es el diagrama de Gantt para un planificador según el algoritmo\
+ **{scheduling_algo.upper()}** {emojis.SMILING_FACE_WITH_GLASSES}
+"""
+)

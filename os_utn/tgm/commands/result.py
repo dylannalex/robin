@@ -10,6 +10,32 @@ from os_utn.tgm import context_buffer as cb
 from os_utn.operating_system.processes import process
 from os_utn.operating_system.processes import scheduler
 from os_utn.operating_system.processes import chart
+from os_utn.tgm.commands import text
+from os_utn import settings as repo_settings
+
+
+def send_result_messages(
+    update: telegram.Update, context: telegram.ext.CallbackContext, result_message: str
+):
+    # Send result message
+    if result_message:
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=result_message,
+            chat_id=update.effective_user["id"],
+        )
+
+    support_me_button = telegram.InlineKeyboardButton(
+        text=text.SUPPORT_ME_BUTTON, url=repo_settings.GITHUB_REPO_LINK
+    )
+
+    # Send 'support me' message
+    context.bot.sendMessage(
+        parse_mode="MarkdownV2",
+        text=text.SUPPORT_ME_MESSAGE,
+        chat_id=update.effective_user["id"],
+        reply_markup=telegram.InlineKeyboardMarkup([[support_me_button]]),
+    )
 
 
 class ProcessesScheduling:
@@ -38,13 +64,10 @@ class ProcessesScheduling:
         processes = ProcessesScheduling._parse_processes(
             cb.ProcessesSchedulingBuffer.get_processes(context)
         )
-
+        scheduling_algo = cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
         chat_id = update.effective_user["id"]
 
-        if (
-            cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
-            == cb.ProcessesSchedulingBuffer.RR_SA
-        ):
+        if scheduling_algo == cb.ProcessesSchedulingBuffer.RR_SA:
             table = scheduler.InteractiveSystem.round_robin(
                 processes,
                 cb.ProcessesSchedulingBuffer.get_time_slice(context),
@@ -52,22 +75,13 @@ class ProcessesScheduling:
                 [cb.ProcessesSchedulingBuffer.get_modification_change(context)],
             )
 
-        elif (
-            cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
-            == cb.ProcessesSchedulingBuffer.SJF_SA
-        ):
+        elif scheduling_algo == cb.ProcessesSchedulingBuffer.SJF_SA:
             table = scheduler.BatchSystem.shortest_job_first(processes)
 
-        elif (
-            cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
-            == cb.ProcessesSchedulingBuffer.SRTN_SA
-        ):
+        elif scheduling_algo == cb.ProcessesSchedulingBuffer.SRTN_SA:
             table = scheduler.BatchSystem.shortest_remaining_time_next(processes)
 
-        elif (
-            cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
-            == cb.ProcessesSchedulingBuffer.FCFS_SA
-        ):
+        elif scheduling_algo == cb.ProcessesSchedulingBuffer.FCFS_SA:
             table = scheduler.BatchSystem.first_come_first_served(processes)
 
         # Get path were the plot will be stored
@@ -79,6 +93,10 @@ class ProcessesScheduling:
         context.bot.sendPhoto(
             chat_id=chat_id,
             photo=open(plot_path, "rb"),
+        )
+
+        send_result_messages(
+            update, context, text.PROCESSES_SCHEDULING_RESULT(scheduling_algo)
         )
 
         # Remove plot

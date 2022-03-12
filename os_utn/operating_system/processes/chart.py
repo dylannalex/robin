@@ -43,4 +43,3 @@ def chart(table: scheduler.ExecutionsTable, path_to_save_plot: str) -> None:
     )
 
     plt.savefig(path_to_save_plot)
- 
