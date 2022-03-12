@@ -4,21 +4,43 @@ from matplotlib.ticker import AutoMinorLocator
 from os_utn.operating_system.processes import scheduler
 
 
+PROCESS_RUNNING_COLOR = "#8E65FF"
+ROW_COLS_COLOR = "#BFBFBF"
+
+
 def chart(table: scheduler.ExecutionsTable, path_to_save_plot: str) -> None:
-    plt.figure(figsize=(1.2 * len(table.executions), 1.2 * len(table.processes)))
-    dx = 0.45
+    last_time = table.executions[-1]["time"]
+    columns = list(range(last_time + 1))
+    rows = sorted([p.name for p in table.processes])
+    colors = [["w" for _ in columns] for _ in rows]
+    cell_text = [["" for _ in columns] for _ in rows]
+
+    # Change cell color
     for interval in table.executions_intervals:
-        x0 = interval["initial_time"] + dx
-        x1 = interval["final_time"] - dx
-        process = [interval["process"], interval["process"]]
-        plt.plot([x0, x1], process, color="green", linestyle="solid", linewidth=20)
+        x0 = interval["initial_time"]
+        x1 = interval["final_time"]
+        process = interval["process"]
+        process_index = rows.index(process)
+        for i in range(x0, x1 + 1):
+            colors[process_index][i] = PROCESS_RUNNING_COLOR
 
-    x_ticks = list(range(len(table.executions)))
+    # Add an "X" when a process arrives
+    for process in table.processes:
+        process_index = rows.index(process.name)
+        cell_text[process_index][process.arrival_time] = "X"
 
-    plt.xticks(ticks=arange(0.5, len(table.executions) + 0.5, 1), labels=x_ticks)
+    fig, ax = plt.subplots()
+    ax.axis("tight")
+    ax.axis("off")
+    plt.table(
+        cellText=cell_text,
+        cellColours=colors,
+        rowLabels=rows,
+        rowColours=[ROW_COLS_COLOR for _ in range(len(rows))],
+        colLabels=columns,
+        colColours=[ROW_COLS_COLOR for _ in range(len(columns))],
+        loc="center",
+    )
 
-    minor_locator = AutoMinorLocator(2)
-    plt.gca(which="both")
-    plt.gca().xaxis.set_minor_locator(minor_locator)
-    plt.grid(which="minor")
     plt.savefig(path_to_save_plot)
+ 
