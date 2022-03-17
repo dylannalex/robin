@@ -162,8 +162,10 @@ Para volver al menú principal utiliza el comando /start
 """
 
 PROCESSES_SCHEDULING_RESULT = (
-    lambda scheduling_algo: f"""
+    lambda scheduling_algo, execution_string: f"""
 Este es el diagrama de Gantt para un planificador según el algoritmo\
- **{scheduling_algo.upper()}** {emojis.SMILING_FACE_WITH_GLASSES}
+ **{scheduling_algo.upper()}**\\.
+ 
+La cadena de ejecución es\\: {execution_string} {emojis.SMILING_FACE_WITH_GLASSES}
 """
 )

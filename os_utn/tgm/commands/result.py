@@ -96,7 +96,11 @@ class ProcessesScheduling:
         )
 
         send_result_messages(
-            update, context, text.PROCESSES_SCHEDULING_RESULT(scheduling_algo)
+            update,
+            context,
+            text.PROCESSES_SCHEDULING_RESULT(
+                scheduling_algo, table.get_execution_string()
+            ),
         )
 
         # Remove plot
