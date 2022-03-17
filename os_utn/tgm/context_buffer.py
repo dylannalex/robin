@@ -32,7 +32,7 @@ class MainBuffer:
 
 class ProcessesSchedulingBuffer:
     # Scheduling algorithm
-    RR_SA = "round_robin"
+    RR_SA = "round robin"
     SJF_SA = "sjf"
     SRTN_SA = "srtn"
     FCFS_SA = "fcfs"
