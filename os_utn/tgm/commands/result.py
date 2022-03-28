@@ -10,6 +10,8 @@ from os_utn.tgm import context_buffer as cb
 from os_utn.operating_system.processes import process
 from os_utn.operating_system.processes import scheduler
 from os_utn.operating_system.processes import chart
+from os_utn.operating_system.tools import units_converter
+from os_utn.operating_system.memory import paging
 from os_utn.tgm.commands import text
 from os_utn import settings as repo_settings
 
@@ -105,3 +107,30 @@ class ProcessesScheduling:
 
         # Remove plot
         os.remove(plot_path)
+
+
+class Paging:
+    def get_page_number(logical_address: str, page_size: int):
+        return paging.get_page_number(logical_address, page_size)
+
+    def convert_page_size(page_size: str):
+        return units_converter.convert_size_unit_to_bytes(
+            *units_converter.decompose_number(page_size)
+        )
+
+    def translate_logical_to_real(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        (
+            logical_address,
+            page_size,
+            page_frame,
+        ) = cb.PagingBuffer.get_logical_to_real_parameters(context)
+
+        real_address = paging.get_real_address(logical_address, page_size, page_frame)
+
+        send_result_messages(
+            update,
+            context,
+            text.TRANSLATE_LOGICAL_TO_REAL_RESULT(real_address),
+        )

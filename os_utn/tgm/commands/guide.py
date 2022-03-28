@@ -17,13 +17,20 @@ class Guide:
             callback_data=cb.MainBuffer.PROCESSES_SCHEDULING_CALLBACK,
         )
 
+        paging_button = telegram.InlineKeyboardButton(
+            text=text.PAGING_BUTTON,
+            callback_data=cb.MainBuffer.PAGING_CALLBACK,
+        )
+
         chat_id = update.effective_user["id"]
 
         context.bot.sendMessage(
             parse_mode="MarkdownV2",
             text=text.START_GUIDE,
             chat_id=chat_id,
-            reply_markup=telegram.InlineKeyboardMarkup([[processes_scheduling_button]]),
+            reply_markup=telegram.InlineKeyboardMarkup(
+                [[processes_scheduling_button, paging_button]]
+            ),
         )
 
     def invalid_input(update: telegram.Update, context: telegram.ext.CallbackContext):
@@ -102,6 +109,57 @@ class ProcessesScheduling:
         context.bot.sendMessage(
             parse_mode="MarkdownV2",
             text=text.RR_TIME_SLICE_AND_MODIFICATION,
+            chat_id=chat_id,
+            reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
+        )
+
+
+class Paging:
+    def select_task(update: telegram.Update, context: telegram.ext.CallbackContext):
+        translate_logical_to_real_button = telegram.InlineKeyboardButton(
+            text=text.TRANSLATE_LOGICAL_TO_REAL_BUTTON,
+            callback_data=cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL,
+        )
+
+        chat_id = update.effective_user["id"]
+
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.PAGING_SELECT_TASK,
+            chat_id=chat_id,
+            reply_markup=telegram.InlineKeyboardMarkup(
+                [
+                    [translate_logical_to_real_button],
+                ]
+            ),
+        )
+
+    def translate_logical_to_real(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        example_button = example.ExampleButton(
+            cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL
+        )
+
+        chat_id = update.effective_user["id"]
+
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.TRANSLATE_LOGICAL_TO_REAL,
+            chat_id=chat_id,
+            reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
+        )
+
+    def get_real_address(
+        update: telegram.Update, context: telegram.ext.CallbackContext, page_number: int
+    ):
+        example_button = example.ExampleButton(cb.PagingBuffer.GET_REAL_ADDRESS)
+
+        chat_id = update.effective_user["id"]
+
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.GET_REAL_ADDRESS(page_number),
             chat_id=chat_id,
             reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
         )

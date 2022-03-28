@@ -15,6 +15,7 @@ class MainBuffer:
     # Callbacks
     CALLBACK_EXAMPLE_INDICATOR = "example-"
     PROCESSES_SCHEDULING_CALLBACK = "processes_scheduling_callback"
+    PAGING_CALLBACK = "paging_callback"
 
     def set_expected_input(context: telegram.ext.CallbackContext, expected_input: str):
         context.user_data["expected_input"] = expected_input
@@ -79,3 +80,33 @@ class ProcessesSchedulingBuffer:
 
     def get_modification_change(context: telegram.ext.CallbackContext) -> str:
         return context.user_data["modification_change"]
+
+
+class PagingBuffer:
+    # Tasks
+    TRANSLATE_LOGICAL_TO_REAL = "logical_to_real"
+    GET_REAL_ADDRESS = "get_real_address"
+    REAL_ADDRESS_LENGTH = "real_address_length"
+    LOGICAL_ADDRESS_LENGTH = "logical_address_length"
+
+    # Expected inputs:
+    LOGICAL_ADDRESS_AND_PAGE_SIZE = "logical_address_and_page_size"
+    PAGE_FRAME = "page_frame"
+
+    def set_logical_address(
+        context: telegram.ext.CallbackContext, logical_address: str
+    ):
+        context.user_data["paging_logical_address"] = logical_address
+
+    def set_page_size(context: telegram.ext.CallbackContext, page_size: str):
+        context.user_data["paging_page_size"] = page_size
+
+    def set_page_frame(context: telegram.ext.CallbackContext, page_frame: str):
+        context.user_data["paging_page_frame"] = page_frame
+
+    def get_logical_to_real_parameters(context: telegram.ext.CallbackContext):
+        return (
+            context.user_data["paging_logical_address"],
+            context.user_data["paging_page_size"],
+            context.user_data["paging_page_frame"],
+        )
