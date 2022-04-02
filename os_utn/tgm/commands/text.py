@@ -71,6 +71,7 @@ PAGING_SELECT_TASK = f"""
 ¿En que puedo ayudarte? {emojis.HAPPY_FACE}
 
 {emojis.NUMBER_1} Traducir dirección virtual a física
+{emojis.NUMBER_2} Obtener cantidad de bits de una dirección física
 """
 
 TRANSLATE_LOGICAL_TO_REAL = f"""
@@ -102,6 +103,15 @@ número_de_pagina (en decimal)
 """
 )
 
+REAL_ADDRESS_LENGTH = f"""
+Ingesa el número de marco de páginas y su tamaño de la siguiente manera:
+
+```
+número_de_marcos_de_página - tamaño_de_marco_de_página (en bytes)
+```
+"""
+
+
 #
 # Buttons text
 #
@@ -116,6 +126,7 @@ FCFS_BUTTON = "FCFS"
 SRTN_BUTTON = "SRTN"
 # Paging:
 TRANSLATE_LOGICAL_TO_REAL_BUTTON = emojis.NUMBER_1
+REAL_ADDRESS_LENGTH_BUTTON = emojis.NUMBER_2
 # Result:
 SUPPORT_ME_BUTTON = f"Repositorio en GitHub {emojis.GRINNING_CAT_WITH_SMILING_EYES}"
 
@@ -264,6 +275,31 @@ Ahora te toca a vos {emojis.SMILING_FACE_WITH_TEAR}\\. Mandame los datos de tu\
 """,
 )
 
+REAL_ADDRESS_LENGTH_EXAMPLE = f"""
+Veamos un ejemplo {emojis.GRINNING_CAT_WITH_SMILING_EYES}
+
+{emojis.BOOKS} Ejercicio\\:
+
+En un sistema operativo el espacio de direccionamiento lógico es de 4028 páginas de 1024 bytes\
+ cada una\\. Este espacio de direccionamiento se mapea en una memoria física que tiene 2048 marcos\
+ de página\\.
+
+¿Cuántos bits tiene la dirección física?
+
+{emojis.BOOKS} Como cargar los datos\\:
+
+El ejercicio nos dice que hay 4028 páginas de 1024 bytes de tamaño, y 2048 marcos de página\\.\
+ Como no nos dice nada acerca del tamaño de los marcos de página, deducimos que tienen el mismo\
+ tamaño que las páginas\\.
+ 
+¡Carguemos los datos {emojis.HAPPY_FACE}\\!
+
+{emojis.PERSON} ``` 2048 - 1024```
+
+Ahora te toca a vos {emojis.SMILING_FACE_WITH_TEAR}\\. Mandame los datos de tu\
+ ejercicio \\(como te mostré arriba {emojis.UP_POINTING_INDEX}\\) para continuar\\!
+"""
+
 #
 # Results
 #
@@ -286,5 +322,11 @@ La cadena de ejecución es\\: {execution_string} {emojis.SMILING_FACE_WITH_GLASS
 TRANSLATE_LOGICAL_TO_REAL_RESULT = (
     lambda real_address: f"""
 La dirección física es {real_address} {emojis.SMILING_FACE_WITH_GLASSES}
+"""
+)
+
+REAL_ADDRESS_LENGTH_RESULT = (
+    lambda real_address_length: f"""
+La dirección física tiene {real_address_length} bits {emojis.SMILING_FACE_WITH_GLASSES}
 """
 )

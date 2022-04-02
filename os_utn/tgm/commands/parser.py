@@ -58,3 +58,10 @@ def parser(update: telegram.Update, context: telegram.ext.CallbackContext):
             context, int(modification_change)
         )
         result.ProcessesScheduling.show_processes_execution(update, context)
+
+    elif expected_input == cb.PagingBuffer.FRAME_NUMBER_AND_SIZE:
+        input_ = input_.replace(" ", "")
+        frame_number, frame_size = input_.split("-")
+        cb.PagingBuffer.set_frame_number(context, frame_number)
+        cb.PagingBuffer.set_frame_size(context, frame_size)
+        result.Paging.real_address_length(update, context)

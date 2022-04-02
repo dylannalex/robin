@@ -74,3 +74,13 @@ class PagingExample:
                     chat_id=chat_id,
                     photo=open(PagingExample.PAGING_TABLE_IMG_PATH, "rb"),
                 )
+
+    def real_address_length(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        chat_id = update.effective_user["id"]
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.REAL_ADDRESS_LENGTH_EXAMPLE,
+            chat_id=chat_id,
+        )
