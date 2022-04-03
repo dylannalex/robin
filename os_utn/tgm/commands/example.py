@@ -84,3 +84,13 @@ class PagingExample:
             text=text.REAL_ADDRESS_LENGTH_EXAMPLE,
             chat_id=chat_id,
         )
+
+    def logical_address_length(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        chat_id = update.effective_user["id"]
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.LOGICAL_ADDRESS_LENGTH_EXAMPLE,
+            chat_id=chat_id,
+        )

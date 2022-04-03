@@ -150,3 +150,19 @@ class Paging:
             context,
             text.REAL_ADDRESS_LENGTH_RESULT(real_address_length_),
         )
+
+    def logical_address_length(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        page_number = cb.PagingBuffer.get_page_number(context)
+        page_size = cb.PagingBuffer.get_page_size(context)
+
+        logical_address_length_ = paging.get_physical_address_length(
+            int(page_number), int(page_size)
+        )
+
+        send_result_messages(
+            update,
+            context,
+            text.LOGICAL_ADDRESS_LENGTH_RESULT(logical_address_length_),
+        )

@@ -125,6 +125,11 @@ class Paging:
             callback_data=cb.PagingBuffer.REAL_ADDRESS_LENGTH,
         )
 
+        logical_address_length_button = telegram.InlineKeyboardButton(
+            text=text.LOGICAL_ADDRESS_LENGTH_BUTTON,
+            callback_data=cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH,
+        )
+
         chat_id = update.effective_user["id"]
 
         context.bot.sendMessage(
@@ -136,6 +141,7 @@ class Paging:
                     [
                         translate_logical_to_real_button,
                         real_address_length_button,
+                        logical_address_length_button,
                     ],
                 ]
             ),
@@ -181,6 +187,20 @@ class Paging:
         context.bot.sendMessage(
             parse_mode="MarkdownV2",
             text=text.REAL_ADDRESS_LENGTH,
+            chat_id=chat_id,
+            reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
+        )
+
+    def logical_address_length(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        example_button = example.ExampleButton(cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH)
+
+        chat_id = update.effective_user["id"]
+
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.LOGICAL_ADDRESS_LENGTH,
             chat_id=chat_id,
             reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
         )

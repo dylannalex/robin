@@ -93,6 +93,7 @@ class PagingBuffer:
     LOGICAL_ADDRESS_AND_PAGE_SIZE = "logical_address_and_page_size"
     PAGE_FRAME = "page_frame"
     FRAME_NUMBER_AND_SIZE = "frame_number_and_size"
+    PAGE_NUMBER_AND_SIZE = "page_number_and_size"
 
     def set_logical_address(
         context: telegram.ext.CallbackContext, logical_address: str
@@ -101,6 +102,9 @@ class PagingBuffer:
 
     def set_page_size(context: telegram.ext.CallbackContext, page_size: str):
         context.user_data["paging_page_size"] = page_size
+
+    def get_page_size(context: telegram.ext.CallbackContext):
+        return context.user_data["paging_page_size"]
 
     def set_page_frame(context: telegram.ext.CallbackContext, page_frame: str):
         context.user_data["paging_page_frame"] = page_frame
@@ -123,3 +127,9 @@ class PagingBuffer:
 
     def get_frame_number(context: telegram.ext.CallbackContext):
         return context.user_data["paging_frame_number"]
+
+    def set_page_number(context: telegram.ext.CallbackContext, page_number: int):
+        context.user_data["paging_page_number"] = page_number
+
+    def get_page_number(context: telegram.ext.CallbackContext):
+        return context.user_data["paging_page_number"]

@@ -64,6 +64,12 @@ class Callback:
             )
             guide.Paging.real_address_length(update, context)
 
+        if cqd == cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH:
+            cb.MainBuffer.set_expected_input(
+                context, cb.PagingBuffer.PAGE_NUMBER_AND_SIZE
+            )
+            guide.Paging.logical_address_length(update, context)
+
         # Examples
         if cqd.startswith(cb.MainBuffer.CALLBACK_EXAMPLE_INDICATOR):
             cqd = cqd.split("-")[1]
@@ -88,3 +94,6 @@ class Callback:
 
         elif cqd == cb.PagingBuffer.REAL_ADDRESS_LENGTH:
             example.PagingExample.real_address_length(update, context)
+
+        elif cqd == cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH:
+            example.PagingExample.logical_address_length(update, context)

@@ -65,3 +65,10 @@ def parser(update: telegram.Update, context: telegram.ext.CallbackContext):
         cb.PagingBuffer.set_frame_number(context, frame_number)
         cb.PagingBuffer.set_frame_size(context, frame_size)
         result.Paging.real_address_length(update, context)
+
+    elif expected_input == cb.PagingBuffer.PAGE_NUMBER_AND_SIZE:
+        input_ = input_.replace(" ", "")
+        page_number, page_size = input_.split("-")
+        cb.PagingBuffer.set_page_number(context, page_number)
+        cb.PagingBuffer.set_page_size(context, page_size)
+        result.Paging.logical_address_length(update, context)
