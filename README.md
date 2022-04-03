@@ -1,5 +1,9 @@
 # operating_systems_utn :computer:
 
+<p align="center">
+  <img width="250" height="170" src="./logo.png?raw=true">
+</p>
+
 [Bot de Telegram](https://t.me/sistemas_operativos_utn_bot) que te ayuda con tus 
 ejercicios de la materia Sistemas Operativos de la Universidad Tecnológica Nacional.
 
