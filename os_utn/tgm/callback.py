@@ -15,6 +15,9 @@ class Callback:
                 update, context
             )
 
+        if cqd == cb.MainBuffer.PAGING_CALLBACK:
+            guide.Paging.select_task(update, context)
+
         # Precesses Scheduling
         if cqd in (
             cb.ProcessesSchedulingBuffer.RR_SA,
@@ -48,6 +51,25 @@ class Callback:
             )
             guide.ProcessesScheduling.load_processes(update, context)
 
+        # Paging
+        if cqd == cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL:
+            cb.MainBuffer.set_expected_input(
+                context, cb.PagingBuffer.LOGICAL_ADDRESS_AND_PAGE_SIZE
+            )
+            guide.Paging.translate_logical_to_real(update, context)
+
+        if cqd == cb.PagingBuffer.REAL_ADDRESS_LENGTH:
+            cb.MainBuffer.set_expected_input(
+                context, cb.PagingBuffer.FRAME_NUMBER_AND_SIZE
+            )
+            guide.Paging.real_address_length(update, context)
+
+        if cqd == cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH:
+            cb.MainBuffer.set_expected_input(
+                context, cb.PagingBuffer.PAGE_NUMBER_AND_SIZE
+            )
+            guide.Paging.logical_address_length(update, context)
+
         # Examples
         if cqd.startswith(cb.MainBuffer.CALLBACK_EXAMPLE_INDICATOR):
             cqd = cqd.split("-")[1]
@@ -63,3 +85,15 @@ class Callback:
             example.ProcessesSchedulingExample.round_robin_time_slice_and_modification(
                 update, context
             )
+
+        elif cqd == cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL:
+            example.PagingExample.translate_logical_to_real(update, context)
+
+        elif cqd == cb.PagingBuffer.GET_REAL_ADDRESS:
+            example.PagingExample.get_real_address(update, context)
+
+        elif cqd == cb.PagingBuffer.REAL_ADDRESS_LENGTH:
+            example.PagingExample.real_address_length(update, context)
+
+        elif cqd == cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH:
+            example.PagingExample.logical_address_length(update, context)

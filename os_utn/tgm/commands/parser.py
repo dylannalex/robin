@@ -30,6 +30,21 @@ def parser(update: telegram.Update, context: telegram.ext.CallbackContext):
         else:
             result.ProcessesScheduling.show_processes_execution(update, context)
 
+    elif expected_input == cb.PagingBuffer.LOGICAL_ADDRESS_AND_PAGE_SIZE:
+        # Set excepted input
+        cb.MainBuffer.set_expected_input(context, cb.PagingBuffer.PAGE_FRAME)
+        # Compute page number and call get_real_address Paging method
+        logical_address, page_size = input_.replace(" ", "").split("-")
+        cb.PagingBuffer.set_logical_address(context, logical_address)
+        page_size = result.Paging.convert_page_size(page_size)
+        cb.PagingBuffer.set_page_size(context, page_size)
+        page_number = result.Paging.get_page_number(logical_address, page_size)
+        guide.Paging.get_real_address(update, context, page_number)
+
+    elif expected_input == cb.PagingBuffer.PAGE_FRAME:
+        page_frame = int(input_)
+        cb.PagingBuffer.set_page_frame(context, page_frame)
+        result.Paging.translate_logical_to_real(update, context)
     elif (
         expected_input == cb.ProcessesSchedulingBuffer.RR_TIME_SLICE_AND_MODIFICATION_EI
     ):
@@ -43,3 +58,17 @@ def parser(update: telegram.Update, context: telegram.ext.CallbackContext):
             context, int(modification_change)
         )
         result.ProcessesScheduling.show_processes_execution(update, context)
+
+    elif expected_input == cb.PagingBuffer.FRAME_NUMBER_AND_SIZE:
+        input_ = input_.replace(" ", "")
+        frame_number, frame_size = input_.split("-")
+        cb.PagingBuffer.set_frame_number(context, frame_number)
+        cb.PagingBuffer.set_frame_size(context, frame_size)
+        result.Paging.real_address_length(update, context)
+
+    elif expected_input == cb.PagingBuffer.PAGE_NUMBER_AND_SIZE:
+        input_ = input_.replace(" ", "")
+        page_number, page_size = input_.split("-")
+        cb.PagingBuffer.set_page_number(context, page_number)
+        cb.PagingBuffer.set_page_size(context, page_size)
+        result.Paging.logical_address_length(update, context)
