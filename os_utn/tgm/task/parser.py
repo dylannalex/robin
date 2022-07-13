@@ -1,7 +1,7 @@
 import telegram
 import telegram.ext
-from os_utn.tgm.commands import guide
-from os_utn.tgm.commands import result
+from os_utn.tgm.task import guide
+from os_utn.tgm.task import result
 from os_utn.tgm import context_buffer as cb
 
 

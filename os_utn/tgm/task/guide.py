@@ -1,13 +1,13 @@
 """
-This file contains classes with commands that guide
-the user through the bot functionalities.
+This file aims to guide the user through the bot
+tasks.
 """
 
 import telegram
 import telegram.ext
-from os_utn.tgm.commands import text
+from os_utn.tgm.task import text
 from os_utn.tgm import context_buffer as cb
-from os_utn.tgm.commands import example
+from os_utn.tgm.task import example
 
 
 class Guide:

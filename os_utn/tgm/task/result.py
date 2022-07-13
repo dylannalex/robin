@@ -1,5 +1,5 @@
 """
-This file contains classes with commands that, given
+This file contains classes with tasks that, given
 the user inputs, computes and shows the results
 """
 
@@ -12,7 +12,7 @@ from os_utn.operating_system.processes import scheduler
 from os_utn.operating_system.processes import chart
 from os_utn.operating_system.tools import units_converter
 from os_utn.operating_system.memory import paging
-from os_utn.tgm.commands import text
+from os_utn.tgm.task import text
 from os_utn import settings as repo_settings
 
 

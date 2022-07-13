@@ -2,7 +2,7 @@ import os
 import time
 import telegram
 import telegram.ext
-from os_utn.tgm.commands import text
+from os_utn.tgm.task import text
 from os_utn.tgm import context_buffer
 
 

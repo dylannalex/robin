@@ -1,8 +1,8 @@
 import telegram
 import telegram.ext
 from os_utn.tgm import settings
-from os_utn.tgm.commands import guide
-from os_utn.tgm.commands import parser
+from os_utn.tgm.task import guide
+from os_utn.tgm.task import parser
 from os_utn.tgm.callback import Callback
 
 
