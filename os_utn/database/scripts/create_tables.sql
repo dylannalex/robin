@@ -12,7 +12,7 @@ CREATE TABLE task_type(
 );
 
 CREATE TABLE task(
-	id INT AUTO_INCREMENT,
+	id INT,
 	name VARCHAR(30) NOT NULL,
 	task_type_id INT,
 	PRIMARY KEY (id),
