@@ -5,10 +5,18 @@ CREATE TABLE tgm_user(
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE task_type(
+	id INT,
+	name VARCHAR(30) NOT NULL,
+	PRIMARY KEY (id)
+);
+
 CREATE TABLE task(
 	id INT AUTO_INCREMENT,
 	name VARCHAR(30) NOT NULL,
-	PRIMARY KEY (id)
+	task_type_id INT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (task_type_id) REFERENCES task_type(id)
 );
 
 CREATE TABLE task_log(
