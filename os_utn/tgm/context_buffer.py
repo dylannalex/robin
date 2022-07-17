@@ -9,6 +9,11 @@ context.user_data effectively.
 """
 
 import telegram.ext
+from datetime import datetime
+
+"""
+Tasks buffers
+"""
 
 
 class MainBuffer:
@@ -133,3 +138,17 @@ class PagingBuffer:
 
     def get_page_number(context: telegram.ext.CallbackContext):
         return context.user_data["paging_page_number"]
+
+
+"""
+Database buffer
+"""
+
+
+class DatabaseBuffer:
+    def set_task_start_time(context: telegram.ext.CallbackContext):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        context.user_data["task_start_time"] = now
+
+    def get_task_start_time(context: telegram.ext.CallbackContext):
+        return context.user_data["task_start_time"]

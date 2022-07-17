@@ -4,6 +4,7 @@ from os_utn.tgm import settings
 from os_utn.tgm.task import guide
 from os_utn.tgm.task import parser
 from os_utn.tgm.callback import Callback
+from os_utn.database import database
 
 
 if settings.MODE == "test":
@@ -28,11 +29,19 @@ def main() -> None:
     bot = telegram.Bot(token=settings.TOKEN)
     updater = telegram.ext.Updater(bot.token, use_context=True)
     dp = updater.dispatcher
+    db = database.connect()
 
     # Commands
-    dp.add_handler(telegram.ext.CommandHandler("start", guide.Guide.start))
     dp.add_handler(
-        telegram.ext.MessageHandler(telegram.ext.Filters.text, parser.parser)
+        telegram.ext.CommandHandler(
+            "start", lambda update, context: guide.Guide.start(update, context, db)
+        )
+    )
+    dp.add_handler(
+        telegram.ext.MessageHandler(
+            telegram.ext.Filters.text,
+            lambda update, context: parser.parser(update, context, db),
+        )
     )
     dp.add_handler(telegram.ext.CallbackQueryHandler(Callback.query_handler))
     run(updater)

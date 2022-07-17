@@ -6,7 +6,10 @@ from os_utn.tgm import context_buffer as cb
 
 
 class Callback:
-    def query_handler(update: telegram.Update, context: telegram.ext.CallbackContext):
+    def query_handler(
+        update: telegram.Update,
+        context: telegram.ext.CallbackContext,
+    ):
         cqd = update.callback_query.data
 
         # Start

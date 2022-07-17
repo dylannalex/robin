@@ -6,6 +6,9 @@ the user inputs, computes and shows the results
 import os
 import telegram
 import telegram.ext
+from datetime import datetime
+from os_utn.database import database
+from os_utn.database import settings as db_settings
 from os_utn.tgm import context_buffer as cb
 from os_utn.operating_system.processes import process
 from os_utn.operating_system.processes import scheduler
@@ -15,9 +18,15 @@ from os_utn.operating_system.memory import paging
 from os_utn.tgm.task import text
 from os_utn import settings as repo_settings
 
+from mysql.connector.connection_cext import CMySQLConnection
+
 
 def send_result_messages(
-    update: telegram.Update, context: telegram.ext.CallbackContext, result_message: str
+    update: telegram.Update,
+    context: telegram.ext.CallbackContext,
+    db: CMySQLConnection,
+    task_id: int,
+    result_message: str,
 ):
     # Send result message
     if result_message:
@@ -37,6 +46,16 @@ def send_result_messages(
         text=text.SUPPORT_ME_MESSAGE,
         chat_id=update.effective_user["id"],
         reply_markup=telegram.InlineKeyboardMarkup([[support_me_button]]),
+    )
+
+    # Save task log
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    database.add_task_log(
+        db,
+        cb.DatabaseBuffer.get_task_start_time(context),
+        now,
+        update.effective_user["id"],
+        task_id,
     )
 
 
@@ -61,7 +80,9 @@ class ProcessesScheduling:
         ]
 
     def show_processes_execution(
-        update: telegram.Update, context: telegram.ext.CallbackContext
+        update: telegram.Update,
+        context: telegram.ext.CallbackContext,
+        db: CMySQLConnection,
     ):
         processes = ProcessesScheduling._parse_processes(
             cb.ProcessesSchedulingBuffer.get_processes(context)
@@ -76,15 +97,19 @@ class ProcessesScheduling:
                 cb.ProcessesSchedulingBuffer.get_with_modification(context),
                 [cb.ProcessesSchedulingBuffer.get_modification_change(context)],
             )
+            task_id = db_settings.ROUND_ROBIN_TASK_ID
 
         elif scheduling_algo == cb.ProcessesSchedulingBuffer.SJF_SA:
             table = scheduler.BatchSystem.shortest_job_first(processes)
+            task_id = db_settings.SJF_TASK_ID
 
         elif scheduling_algo == cb.ProcessesSchedulingBuffer.SRTN_SA:
             table = scheduler.BatchSystem.shortest_remaining_time_next(processes)
+            task_id = db_settings.SRTN_TASK_ID
 
         elif scheduling_algo == cb.ProcessesSchedulingBuffer.FCFS_SA:
             table = scheduler.BatchSystem.first_come_first_served(processes)
+            task_id = db_settings.FCFS_TASK_ID
 
         # Get path were the plot will be stored
         chat_id = update.effective_user["id"]
@@ -100,6 +125,8 @@ class ProcessesScheduling:
         send_result_messages(
             update,
             context,
+            db,
+            task_id,
             text.PROCESSES_SCHEDULING_RESULT(
                 scheduling_algo, table.get_execution_string()
             ),
@@ -119,7 +146,9 @@ class Paging:
         )
 
     def translate_logical_to_real(
-        update: telegram.Update, context: telegram.ext.CallbackContext
+        update: telegram.Update,
+        context: telegram.ext.CallbackContext,
+        db: CMySQLConnection,
     ):
         (
             logical_address,
@@ -132,11 +161,15 @@ class Paging:
         send_result_messages(
             update,
             context,
+            db,
+            db_settings.TRANSLATE_LOGICAL_TO_REAL_TASK_ID,
             text.TRANSLATE_LOGICAL_TO_REAL_RESULT(real_address),
         )
 
     def real_address_length(
-        update: telegram.Update, context: telegram.ext.CallbackContext
+        update: telegram.Update,
+        context: telegram.ext.CallbackContext,
+        db: CMySQLConnection,
     ):
         frame_number = cb.PagingBuffer.get_frame_number(context)
         frame_size = cb.PagingBuffer.get_frame_size(context)
@@ -148,11 +181,15 @@ class Paging:
         send_result_messages(
             update,
             context,
+            db,
+            db_settings.REAL_ADDRESS_LENGTH_TASK_ID,
             text.REAL_ADDRESS_LENGTH_RESULT(real_address_length),
         )
 
     def logical_address_length(
-        update: telegram.Update, context: telegram.ext.CallbackContext
+        update: telegram.Update,
+        context: telegram.ext.CallbackContext,
+        db: CMySQLConnection,
     ):
         page_number = cb.PagingBuffer.get_page_number(context)
         page_size = cb.PagingBuffer.get_page_size(context)
