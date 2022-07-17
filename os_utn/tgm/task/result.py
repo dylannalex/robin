@@ -141,14 +141,14 @@ class Paging:
         frame_number = cb.PagingBuffer.get_frame_number(context)
         frame_size = cb.PagingBuffer.get_frame_size(context)
 
-        real_address_length_ = paging.get_physical_address_length(
+        real_address_length = paging.get_physical_address_length(
             int(frame_number), int(frame_size)
         )
 
         send_result_messages(
             update,
             context,
-            text.REAL_ADDRESS_LENGTH_RESULT(real_address_length_),
+            text.REAL_ADDRESS_LENGTH_RESULT(real_address_length),
         )
 
     def logical_address_length(
