@@ -1,6 +1,4 @@
-from numpy import arange
 from matplotlib import pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
 from os_utn.operating_system.processes import scheduler
 
 
