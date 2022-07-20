@@ -35,7 +35,6 @@ class ExecutionsTable:
     @property
     def executions_intervals(self):
         executions_intervals = []
-
         last_process_running = self.executions[0]["process_running"]
         current_execution = {
             "process": self.executions[0]["process_running"],
@@ -54,7 +53,7 @@ class ExecutionsTable:
                 }
                 last_process_running = execution["process_running"]
 
-        current_execution["final_time"] = execution["time"] - 1
+        current_execution["final_time"] = execution["time"]
         executions_intervals.append(current_execution)
 
         return executions_intervals
