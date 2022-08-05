@@ -139,7 +139,7 @@ class InteractiveSystem:
         return [wait_time, f"Avarage: {avarage}"]
 
     def round_robin(
-        processes: list[InteractiveProcess],
+        processes: list[Process],
         time_slice,
         with_modification: bool = False,
         with_modification_change_times: list[int] = None,

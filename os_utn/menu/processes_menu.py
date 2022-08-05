@@ -56,10 +56,10 @@ def get_process() -> Union[None, process.Process]:
         return None
 
     if confirm():
-        return process.InteractiveProcess(name, arrival_time, total_executions)
+        return process.Process(name, arrival_time, total_executions)
 
 
-def parse_processes(processes_string: str) -> list[process.InteractiveProcess]:
+def parse_processes(processes_string: str) -> list[process.Process]:
     """
     Parses the given processes string.
 
@@ -70,9 +70,7 @@ def parse_processes(processes_string: str) -> list[process.InteractiveProcess]:
         >>> [process.Process("A", 1, 5), process.Process("B", 2, 6), process.Process("C", 3, 8)]
     """
     processes_list = [l.split("-") for l in processes_string.split("|")]
-    return [
-        process.InteractiveProcess(p[0], int(p[1]), int(p[2])) for p in processes_list
-    ]
+    return [process.Process(p[0], int(p[1]), int(p[2])) for p in processes_list]
 
 
 def remove_process(processes) -> list[process.Process]:

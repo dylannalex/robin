@@ -6,30 +6,10 @@ class Process:
         self.name = name
         self.arrival_time = arrival_time
         self.total_executions = total_executions
-        self.reset()
-
-    def has_finished(self) -> bool:
-        if self.current_executions == self.total_executions:
-            return True
-        return False
-
-    def execute(self) -> None:
-        self.current_executions += 1
-
-    def reset(self) -> None:
         self.finish_time = 0
         self.current_executions = 0
-        self.wait_time = 0
-
-    @property
-    def remaining_executions(self):
-        return self.total_executions - self.current_executions
-
-
-class InteractiveProcess(Process):
-    def __init__(self, name, arrival_time, total_executions):
-        super().__init__(name, arrival_time, total_executions)
         self.consecutive_executions = 0
+        self.wait_time = 0
 
     def execute(self) -> None:
         self.current_executions += 1
@@ -40,6 +20,23 @@ class InteractiveProcess(Process):
         self.current_executions = 0
         self.consecutive_executions = 0
         self.wait_time = 0
+
+    def execute(self) -> None:
+        self.current_executions += 1
+
+    def reset(self) -> None:
+        self.finish_time = 0
+        self.current_executions = 0
+        self.wait_time = 0
+
+    def has_finished(self) -> bool:
+        if self.current_executions == self.total_executions:
+            return True
+        return False
+
+    @property
+    def remaining_executions(self):
+        return self.total_executions - self.current_executions
 
 
 def sort_processes_by_arrival_time(processes: list[Process]):
