@@ -1,4 +1,4 @@
-from os_utn.operating_system.processes.process import *
+from os_utn.operating_system.processes import process
 
 
 class ExecutionsTable:
@@ -6,28 +6,30 @@ class ExecutionsTable:
         self.processes = []
         self.executions = []
 
-    def add_execution(self, time: int, process: Process, queue: list[Process]) -> None:
+    def add_execution(
+        self, time: int, process_: process.Process, queue: list[process.Process]
+    ) -> None:
         self.executions.append(
             {
                 "time": time,
-                "process_running": process.name,
-                "remaining_executions": process.remaining_executions,
-                "queue": get_processes_names(queue),
+                "process_running": process_.name,
+                "remaining_executions": process_.remaining_executions,
+                "queue": process.ProcessList.get_processes_names(queue),
             }
         )
-        self._update_process(time, process)
+        self._update_process(time, process_)
         self._sort_table()
 
-    def _update_process(self, time: int, process: Process) -> None:
-        if process.has_finished():
-            process.finish_time = time
+    def _update_process(self, time: int, process_: process.Process) -> None:
+        if process_.has_finished():
+            process_.finish_time = time
 
         for i, p in enumerate(self.processes):
-            if process.name == p.name:
-                self.processes[i] = process
+            if process_.name == p.name:
+                self.processes[i] = process_
                 break
         else:
-            self.processes.append(process)
+            self.processes.append(process_)
 
     def _sort_table(self) -> None:
         self.executions = sorted(self.executions, key=lambda d: d["time"])
@@ -106,22 +108,22 @@ class InteractiveSystem:
             (p.name, table.get_last_execution_time(p.name) - p.arrival_time + 1)
             for p in table.processes
         ]
-        avarage = sum([wait_time[1] for wait_time in processes_return_time]) / len(
+        average = sum([wait_time[1] for wait_time in processes_return_time]) / len(
             processes_return_time
         )
 
-        return [processes_return_time, f"Avarage: {avarage}"]
+        return [processes_return_time, f"Average: {average}"]
 
     def get_wait_time(table: ExecutionsTable) -> list[tuple[str, int]]:
         processes_wait_time = [
             (p.name, table.get_first_execution_time(p.name) - p.arrival_time)
             for p in table.processes
         ]
-        avarage = sum([wait_time[1] for wait_time in processes_wait_time]) / len(
+        average = sum([wait_time[1] for wait_time in processes_wait_time]) / len(
             processes_wait_time
         )
 
-        return [processes_wait_time, f"Avarage: {avarage}"]
+        return [processes_wait_time, f"Average: {average}"]
 
     def get_wait_time2(table: ExecutionsTable) -> list[tuple[str, int]]:
         wait_time = [
@@ -134,12 +136,12 @@ class InteractiveSystem:
             )
             for p in table.processes
         ]
-        avarage = sum([wait_time[1] for wait_time in wait_time]) / len(wait_time)
+        average = sum([wait_time[1] for wait_time in wait_time]) / len(wait_time)
 
-        return [wait_time, f"Avarage: {avarage}"]
+        return [wait_time, f"Average: {average}"]
 
     def round_robin(
-        processes: list[Process],
+        processes: list[process.Process],
         time_slice,
         with_modification: bool = False,
         with_modification_change_times: list[int] = None,
@@ -148,7 +150,7 @@ class InteractiveSystem:
         with_modification state can change over time. with_modification_changes is a
         list the value time instants where the with_modification value changes.
         """
-        queue = find_first_processes(processes)
+        queue = process.ProcessList.find_first_processes(processes)
         running_process = queue[0]
         slept_processes = [p for p in processes if p not in queue]
         table = ExecutionsTable()
@@ -173,7 +175,9 @@ class InteractiveSystem:
                         break
 
             # Check if a process activates
-            new_processes, slept_processes = get_new_processes(time, slept_processes)
+            new_processes, slept_processes = process.ProcessList.get_new_processes(
+                time, slept_processes
+            )
 
             # Update Queue
             if running_process.has_finished():
@@ -201,15 +205,17 @@ class BatchSystem:
             (p.name, table.get_last_execution_time(p.name) - p.arrival_time + 1)
             for p in table.processes
         ]
-        avarage = sum([wait_time[1] for wait_time in processes_return_time]) / len(
+        average = sum([wait_time[1] for wait_time in processes_return_time]) / len(
             processes_return_time
         )
 
-        return [processes_return_time, f"Avarage: {avarage}"]
+        return [processes_return_time, f"Average: {average}"]
 
-    def shortest_job_first(processes: list[Process]):
-        first_processes = find_first_processes(processes)
-        first_processes_sorted = sort_processes_by_total_executions(first_processes)
+    def shortest_job_first(processes: list[process.Process]):
+        first_processes = process.ProcessList.find_first_processes(processes)
+        first_processes_sorted = process.ProcessList.sort_processes_by_total_executions(
+            first_processes
+        )
         running_process = first_processes_sorted[0]
         queue = first_processes_sorted[1::]
         slept_processes = [p for p in processes if p not in first_processes]
@@ -223,8 +229,12 @@ class BatchSystem:
             time += 1
 
             # Find new processes
-            new_processes, slept_processes = get_new_processes(time, slept_processes)
-            queue = sort_processes_by_total_executions([*queue, *new_processes])
+            new_processes, slept_processes = process.ProcessList.get_new_processes(
+                time, slept_processes
+            )
+            queue = process.ProcessList.sort_processes_by_total_executions(
+                [*queue, *new_processes]
+            )
             if running_process.has_finished():
                 if queue:
                     running_process = queue[0]
@@ -234,8 +244,8 @@ class BatchSystem:
 
         return table
 
-    def first_come_first_served(processes: list[Process]):
-        first_processes = find_first_processes(processes)
+    def first_come_first_served(processes: list[process.Process]):
+        first_processes = process.ProcessList.find_first_processes(processes)
         running_process = first_processes[0]
         queue = first_processes[1::]
         slept_processes = [p for p in processes if p not in first_processes]
@@ -247,7 +257,7 @@ class BatchSystem:
             table.add_execution(time, running_process, queue)
             time += 1
 
-            queue += get_new_processes(time, slept_processes)[0]
+            queue += process.ProcessList.get_new_processes(time, slept_processes)[0]
 
             if running_process.has_finished():
                 if queue:
@@ -258,9 +268,11 @@ class BatchSystem:
 
         return table
 
-    def shortest_remaining_time_next(processes: list[Process]):
-        first_processes = find_first_processes(processes)
-        first_processes_sorted = sort_processes_by_total_executions(first_processes)
+    def shortest_remaining_time_next(processes: list[process.Process]):
+        first_processes = process.ProcessList.find_first_processes(processes)
+        first_processes_sorted = process.ProcessList.sort_processes_by_total_executions(
+            first_processes
+        )
         running_process = first_processes_sorted[0]
         queue = first_processes_sorted[1::]
         slept_processes = [p for p in processes if p not in first_processes]
@@ -274,8 +286,12 @@ class BatchSystem:
             time += 1
 
             # Find new processes
-            new_processes, slept_processes = get_new_processes(time, slept_processes)
-            new_processes_sorted = sort_processes_by_total_executions(new_processes)
+            new_processes, slept_processes = process.ProcessList.get_new_processes(
+                time, slept_processes
+            )
+            new_processes_sorted = (
+                process.ProcessList.sort_processes_by_total_executions(new_processes)
+            )
 
             # If a new process have less remaining current_executions than the running
             # process, start executing the new process:
@@ -289,7 +305,7 @@ class BatchSystem:
                     new_processes_sorted.pop(0)
 
             # Update activated proccesses
-            queue = sort_processes_by_remaining_executions(
+            queue = process.ProcessList.sort_processes_by_remaining_executions(
                 [*queue, *new_processes_sorted]
             )
             # Check if running process has finished
