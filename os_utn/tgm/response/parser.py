@@ -1,7 +1,7 @@
 import telegram
 import telegram.ext
-from os_utn.tgm.task import guide
-from os_utn.tgm.task import result
+from os_utn.tgm.response import guide
+from os_utn.tgm.response import result
 from os_utn.tgm import context_buffer as cb
 
 from mysql.connector.connection_cext import CMySQLConnection

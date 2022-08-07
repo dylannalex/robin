@@ -15,7 +15,7 @@ from os_utn.operating_system.processes import scheduler
 from os_utn.operating_system.processes import chart
 from os_utn.operating_system.tools import units_converter
 from os_utn.operating_system.memory import paging
-from os_utn.tgm.task import text
+from os_utn.tgm.response import text
 from os_utn import settings as repo_settings
 
 from mysql.connector.connection_cext import CMySQLConnection
