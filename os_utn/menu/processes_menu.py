@@ -1,5 +1,7 @@
 from typing import Union
-from os_utn.operating_system.processes import process, scheduler
+from os_utn.operating_system.processes import process
+from os_utn.operating_system.processes import scheduler
+
 from os import system
 
 
@@ -56,23 +58,7 @@ def get_process() -> Union[None, process.Process]:
         return None
 
     if confirm():
-        return process.InteractiveProcess(name, arrival_time, total_executions)
-
-
-def parse_processes(processes_string: str) -> list[process.InteractiveProcess]:
-    """
-    Parses the given processes string.
-
-
-    @processes_string: process_name-arrival_time-total_executions|process_name-arrival_time-total_executions...
-    Example:
-        A-1-5|B-2-6|C-3-8
-        >>> [process.Process("A", 1, 5), process.Process("B", 2, 6), process.Process("C", 3, 8)]
-    """
-    processes_list = [l.split("-") for l in processes_string.split("|")]
-    return [
-        process.InteractiveProcess(p[0], int(p[1]), int(p[2])) for p in processes_list
-    ]
+        return process.Process(name, arrival_time, total_executions)
 
 
 def remove_process(processes) -> list[process.Process]:
@@ -101,18 +87,18 @@ def main():
         opt = menu(OPTIONS)
         system("cls")
         if opt == 0:
-            print("FORMAT: \t\tprocessName-arrivalTime-totalExecutions|...|...")
-            print("EXAMPLE:\t\tA-1-5|B-2-6|C-3-8\n\n")
+            print("FORMAT: \t\tprocessName-arrivalTime-totalExecutions,*-*-*,...")
+            print("EXAMPLE:\t\tA-1-5,B-2-6,C-3-8\n\n")
             processes_str = input("Enter processes: ")
-            processes = parse_processes(processes_str)
+            processes = process.ProcessList.parse_processes_string(processes_str)
 
         if opt == 6:
             return
 
         if opt == 1:
-            process = get_process()
-            if process:
-                processes.append(process)
+            process_ = get_process()
+            if process_:
+                processes.append(process_)
 
         if opt == 2:
             processes = remove_process(processes)
