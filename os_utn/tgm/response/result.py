@@ -7,15 +7,19 @@ import os
 import telegram
 import telegram.ext
 from datetime import datetime
+
 from os_utn.database import database
 from os_utn.database import settings as db_settings
+
 from os_utn.tgm import context_buffer as cb
+from os_utn.tgm.response import text
+from os_utn.tgm import data
+
 from os_utn.operating_system.processes import process
 from os_utn.operating_system.processes import scheduler
 from os_utn.operating_system.processes import chart
 from os_utn.operating_system.tools import units_converter
 from os_utn.operating_system.memory import paging
-from os_utn.tgm.response import text
 from os_utn import settings as repo_settings
 
 from mysql.connector.connection_cext import CMySQLConnection
@@ -74,7 +78,8 @@ class ProcessesScheduling:
         scheduling_algo = cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
         chat_id = update.effective_user["id"]
 
-        if scheduling_algo == cb.ProcessesSchedulingBuffer.RR_SA:
+        if scheduling_algo == data.ProcessScheduling.GUIDE["round_robin"]:
+            scheduling_algo = "Round Robin"
             table = scheduler.InteractiveSystem.round_robin(
                 processes,
                 cb.ProcessesSchedulingBuffer.get_time_slice(context),
@@ -83,15 +88,21 @@ class ProcessesScheduling:
             )
             task_id = db_settings.ROUND_ROBIN_TASK_ID
 
-        elif scheduling_algo == cb.ProcessesSchedulingBuffer.SJF_SA:
+        elif scheduling_algo == data.ProcessScheduling.GUIDE["shortest_job_first"]:
+            scheduling_algo = "Shortest Job First"
             table = scheduler.BatchSystem.shortest_job_first(processes)
             task_id = db_settings.SJF_TASK_ID
 
-        elif scheduling_algo == cb.ProcessesSchedulingBuffer.SRTN_SA:
+        elif (
+            scheduling_algo
+            == data.ProcessScheduling.GUIDE["shortest_remaining_time_next"]
+        ):
+            scheduling_algo = "Shortest Remaining Time Next"
             table = scheduler.BatchSystem.shortest_remaining_time_next(processes)
             task_id = db_settings.SRTN_TASK_ID
 
-        elif scheduling_algo == cb.ProcessesSchedulingBuffer.FCFS_SA:
+        elif scheduling_algo == data.ProcessScheduling.GUIDE["first_come_first_served"]:
+            scheduling_algo = "First Come First Served"
             table = scheduler.BatchSystem.first_come_first_served(processes)
             task_id = db_settings.FCFS_TASK_ID
 

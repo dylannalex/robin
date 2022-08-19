@@ -2,9 +2,9 @@ import telegram
 import telegram.ext
 from os_utn.tgm import settings
 from os_utn.tgm.response import guide
-from os_utn.tgm.response import parser
-from os_utn.tgm.callback import Callback
+from os_utn.tgm import parser
 from os_utn.database import database
+from os_utn.tgm.callback import handler
 
 
 if settings.MODE == "test":
@@ -43,7 +43,7 @@ def main() -> None:
             lambda update, context: parser.parser(update, context, db),
         )
     )
-    dp.add_handler(telegram.ext.CallbackQueryHandler(Callback.query_handler))
+    dp.add_handler(telegram.ext.CallbackQueryHandler(handler.query_handler))
     run(updater)
 
 

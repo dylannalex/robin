@@ -3,15 +3,16 @@ import time
 import telegram
 import telegram.ext
 from os_utn.tgm.response import text
-from os_utn.tgm import context_buffer
+from os_utn.tgm.callback import callback
 
 
 class ExampleButton(telegram.InlineKeyboardButton):
-    def __init__(self, callback_function: str):
+    def __init__(self, callback_task: callback.CallbackTask, data_: str):
         super().__init__(
             text=text.NEED_AN_EXAMPLE_BUTTON,
-            callback_data=context_buffer.MainBuffer.CALLBACK_EXAMPLE_INDICATOR
-            + callback_function,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.EXAMPLE, callback_task, data_
+            ),
         )
 
 
