@@ -31,19 +31,22 @@ def main() -> None:
     dp = updater.dispatcher
     db = database.connect()
 
-    # Commands
-    dp.add_handler(
-        telegram.ext.CommandHandler(
-            "start", lambda update, context: guide.Guide.start(update, context, db)
-        )
-    )
+    # Task Selector
+    dp.add_handler(telegram.ext.CommandHandler("start", guide.Guide.start))
+    # Parser
     dp.add_handler(
         telegram.ext.MessageHandler(
             telegram.ext.Filters.text,
             lambda update, context: parser.parser(update, context, db),
         )
     )
-    dp.add_handler(telegram.ext.CallbackQueryHandler(handler.query_handler))
+    # Query handler
+    dp.add_handler(
+        telegram.ext.CallbackQueryHandler(
+            lambda update, context: handler.query_handler(update, context, db)
+        )
+    )
+
     run(updater)
 
 

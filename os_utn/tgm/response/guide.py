@@ -6,33 +6,16 @@ tasks.
 import telegram
 import telegram.ext
 from os_utn.tgm.response import text
-from os_utn.tgm import context_buffer as cb
 from os_utn.tgm.callback import callback
 from os_utn.tgm import data
 from os_utn.tgm.response import example
-from os_utn.database import database
-
-from mysql.connector.connection_cext import CMySQLConnection
 
 
 class Guide:
     def start(
         update: telegram.Update,
         context: telegram.ext.CallbackContext,
-        db: CMySQLConnection,
     ):
-        # Add user to database if it is the first time he/she uses the bot
-        if not database.is_tgm_user_added(db, update.effective_user["id"]):
-            database.add_tgm_user(
-                db,
-                update.effective_user["username"],
-                update.effective_user["first_name"],
-                update.effective_user["id"],
-            )
-
-        # Set current time
-        cb.DatabaseBuffer.set_task_start_time(context)
-
         # Show available tasks
         processes_scheduling_button = telegram.InlineKeyboardButton(
             text=text.PROCESSES_SCHEDULING_GUIDE_BUTTON,
