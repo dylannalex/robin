@@ -12,7 +12,7 @@ from os_utn.tgm.response import example
 
 
 class Guide:
-    def start(
+    def select_task(
         update: telegram.Update,
         context: telegram.ext.CallbackContext,
     ):

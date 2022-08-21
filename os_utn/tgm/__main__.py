@@ -32,7 +32,7 @@ def main() -> None:
     db = database.connect()
 
     # Task Selector
-    dp.add_handler(telegram.ext.CommandHandler("start", guide.Guide.start))
+    dp.add_handler(telegram.ext.CommandHandler("start", guide.Guide.select_task))
     # Parser
     dp.add_handler(
         telegram.ext.MessageHandler(
