@@ -17,11 +17,6 @@ Tasks buffers
 
 
 class MainBuffer:
-    # Callbacks
-    CALLBACK_EXAMPLE_INDICATOR = "example-"
-    PROCESSES_SCHEDULING_CALLBACK = "processes_scheduling_callback"
-    PAGING_CALLBACK = "paging_callback"
-
     def set_expected_input(context: telegram.ext.CallbackContext, expected_input: str):
         context.user_data["expected_input"] = expected_input
 
@@ -37,16 +32,6 @@ class MainBuffer:
 
 
 class ProcessesSchedulingBuffer:
-    # Scheduling algorithm
-    RR_SA = "round robin"
-    SJF_SA = "sjf"
-    SRTN_SA = "srtn"
-    FCFS_SA = "fcfs"
-
-    # Expected inputs:
-    PROCESSES_EI = "processes"
-    RR_TIME_SLICE_AND_MODIFICATION_EI = "round_robin_time_slice_and_modification"
-
     def set_scheduling_algorithm(
         context: telegram.ext.CallbackContext, scheduling_algorithm: str
     ):
@@ -88,18 +73,6 @@ class ProcessesSchedulingBuffer:
 
 
 class PagingBuffer:
-    # Tasks
-    TRANSLATE_LOGICAL_TO_REAL = "logical_to_real"
-    GET_REAL_ADDRESS = "get_real_address"
-    REAL_ADDRESS_LENGTH = "real_address_length"
-    LOGICAL_ADDRESS_LENGTH = "logical_address_length"
-
-    # Expected inputs:
-    LOGICAL_ADDRESS_AND_PAGE_SIZE = "logical_address_and_page_size"
-    PAGE_FRAME = "page_frame"
-    FRAME_NUMBER_AND_SIZE = "frame_number_and_size"
-    PAGE_NUMBER_AND_SIZE = "page_number_and_size"
-
     def set_logical_address(
         context: telegram.ext.CallbackContext, logical_address: str
     ):

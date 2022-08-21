@@ -6,40 +6,33 @@ tasks.
 import telegram
 import telegram.ext
 from os_utn.tgm.response import text
-from os_utn.tgm import context_buffer as cb
+from os_utn.tgm.callback import callback
+from os_utn.tgm import data
 from os_utn.tgm.response import example
-from os_utn.database import database
-
-from mysql.connector.connection_cext import CMySQLConnection
 
 
 class Guide:
-    def start(
+    def select_task(
         update: telegram.Update,
         context: telegram.ext.CallbackContext,
-        db: CMySQLConnection,
     ):
-        # Add user to database if it is the first time he/she uses the bot
-        if not database.is_tgm_user_added(db, update.effective_user["id"]):
-            database.add_tgm_user(
-                db,
-                update.effective_user["username"],
-                update.effective_user["first_name"],
-                update.effective_user["id"],
-            )
-
-        # Set current time
-        cb.DatabaseBuffer.set_task_start_time(context)
-
         # Show available tasks
         processes_scheduling_button = telegram.InlineKeyboardButton(
             text=text.PROCESSES_SCHEDULING_GUIDE_BUTTON,
-            callback_data=cb.MainBuffer.PROCESSES_SCHEDULING_CALLBACK,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.SELECT_TASK,
+                data.TaskSelector.TASK["process_scheduling"],
+            ),
         )
 
         paging_button = telegram.InlineKeyboardButton(
             text=text.PAGING_BUTTON,
-            callback_data=cb.MainBuffer.PAGING_CALLBACK,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.SELECT_TASK,
+                data.TaskSelector.TASK["paging"],
+            ),
         )
 
         chat_id = update.effective_user["id"]
@@ -53,21 +46,6 @@ class Guide:
             ),
         )
 
-    def invalid_input(update: telegram.Update, context: telegram.ext.CallbackContext):
-        processes_scheduling_button = telegram.InlineKeyboardButton(
-            text=text.PROCESSES_SCHEDULING_GUIDE_BUTTON,
-            callback_data=cb.MainBuffer.PROCESSES_SCHEDULING_CALLBACK,
-        )
-
-        chat_id = update.effective_user["id"]
-
-        context.bot.sendMessage(
-            parse_mode="MarkdownV2",
-            text=text.START_GUIDE,
-            chat_id=chat_id,
-            reply_markup=telegram.InlineKeyboardMarkup([[processes_scheduling_button]]),
-        )
-
 
 class ProcessesScheduling:
     def select_processes_scheduling_algorithm(
@@ -75,21 +53,37 @@ class ProcessesScheduling:
     ):
         round_robin_button = telegram.InlineKeyboardButton(
             text=text.ROUND_ROBBIN_BUTTON,
-            callback_data=cb.ProcessesSchedulingBuffer.RR_SA,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.GUIDE["round_robin"],
+            ),
         )
         sjf_button = telegram.InlineKeyboardButton(
             text=text.SJF_BUTTON,
-            callback_data=cb.ProcessesSchedulingBuffer.SJF_SA,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.GUIDE["shortest_job_first"],
+            ),
         )
 
         srtn_button = telegram.InlineKeyboardButton(
             text=text.SRTN_BUTTON,
-            callback_data=cb.ProcessesSchedulingBuffer.SRTN_SA,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.GUIDE["shortest_remaining_time_next"],
+            ),
         )
 
         fcfs_button = telegram.InlineKeyboardButton(
             text=text.FCFS_BUTTON,
-            callback_data=cb.ProcessesSchedulingBuffer.FCFS_SA,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.GUIDE["first_come_first_served"],
+            ),
         )
 
         chat_id = update.effective_user["id"]
@@ -105,7 +99,8 @@ class ProcessesScheduling:
 
     def load_processes(update: telegram.Update, context: telegram.ext.CallbackContext):
         example_button = example.ExampleButton(
-            cb.ProcessesSchedulingBuffer.PROCESSES_EI
+            callback.CallbackTask.PROCESSES_SCHEDULING,
+            data.ProcessScheduling.EXAMPLE["load_processes"],
         )
 
         chat_id = update.effective_user["id"]
@@ -121,7 +116,8 @@ class ProcessesScheduling:
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
         example_button = example.ExampleButton(
-            cb.ProcessesSchedulingBuffer.RR_TIME_SLICE_AND_MODIFICATION_EI
+            callback.CallbackTask.PROCESSES_SCHEDULING,
+            data.ProcessScheduling.EXAMPLE["round_robin_time_slice_and_modification"],
         )
 
         chat_id = update.effective_user["id"]
@@ -138,18 +134,29 @@ class Paging:
     def select_task(update: telegram.Update, context: telegram.ext.CallbackContext):
         translate_logical_to_real_button = telegram.InlineKeyboardButton(
             text=text.TRANSLATE_LOGICAL_TO_REAL_BUTTON,
-            callback_data=cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PAGING,
+                data.Paging.GUIDE["translate_logical_to_real"],
+            ),
         )
         real_address_length_button = telegram.InlineKeyboardButton(
             text=text.REAL_ADDRESS_LENGTH_BUTTON,
-            callback_data=cb.PagingBuffer.REAL_ADDRESS_LENGTH,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PAGING,
+                data.Paging.GUIDE["real_address_length"],
+            ),
         )
 
         logical_address_length_button = telegram.InlineKeyboardButton(
             text=text.LOGICAL_ADDRESS_LENGTH_BUTTON,
-            callback_data=cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.GUIDE,
+                callback.CallbackTask.PAGING,
+                data.Paging.GUIDE["logical_address_length"],
+            ),
         )
-
         chat_id = update.effective_user["id"]
 
         context.bot.sendMessage(
@@ -171,7 +178,8 @@ class Paging:
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
         example_button = example.ExampleButton(
-            cb.PagingBuffer.TRANSLATE_LOGICAL_TO_REAL
+            callback.CallbackTask.PAGING,
+            data.Paging.EXAMPLE["translate_logical_to_real"],
         )
 
         chat_id = update.effective_user["id"]
@@ -186,7 +194,10 @@ class Paging:
     def get_real_address(
         update: telegram.Update, context: telegram.ext.CallbackContext, page_number: int
     ):
-        example_button = example.ExampleButton(cb.PagingBuffer.GET_REAL_ADDRESS)
+        example_button = example.ExampleButton(
+            callback.CallbackTask.PAGING,
+            data.Paging.EXAMPLE["get_real_address"],
+        )
 
         chat_id = update.effective_user["id"]
 
@@ -200,7 +211,10 @@ class Paging:
     def real_address_length(
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
-        example_button = example.ExampleButton(cb.PagingBuffer.REAL_ADDRESS_LENGTH)
+        example_button = example.ExampleButton(
+            callback.CallbackTask.PAGING,
+            data.Paging.EXAMPLE["real_address_length"],
+        )
 
         chat_id = update.effective_user["id"]
 
@@ -214,7 +228,10 @@ class Paging:
     def logical_address_length(
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
-        example_button = example.ExampleButton(cb.PagingBuffer.LOGICAL_ADDRESS_LENGTH)
+        example_button = example.ExampleButton(
+            callback.CallbackTask.PAGING,
+            data.Paging.EXAMPLE["logical_address_length"],
+        )
 
         chat_id = update.effective_user["id"]
 

@@ -1,5 +1,6 @@
 import telegram
 import telegram.ext
+from os_utn.tgm import data
 from os_utn.tgm.response import guide
 from os_utn.tgm.response import result
 from os_utn.tgm import context_buffer as cb
@@ -16,16 +17,15 @@ def parser(
     expected_input = cb.MainBuffer.get_expected_input(context)
     input_ = str(update.message.text)
 
-    if expected_input == cb.ProcessesSchedulingBuffer.PROCESSES_EI:
+    if expected_input == data.ProcessScheduling.EXPECTED_INPUT["processes"]:
         processes = input_.replace(" ", "")
+        scheduling_algo = cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
         cb.ProcessesSchedulingBuffer.set_processes(context, processes)
 
-        if (
-            cb.ProcessesSchedulingBuffer.get_scheduling_algorithm(context)
-            == cb.ProcessesSchedulingBuffer.RR_SA
-        ):
+        if scheduling_algo == data.ProcessScheduling.GUIDE["round_robin"]:
             cb.MainBuffer.set_expected_input(
-                context, cb.ProcessesSchedulingBuffer.RR_TIME_SLICE_AND_MODIFICATION_EI
+                context,
+                data.ProcessScheduling.EXPECTED_INPUT["time_slice_and_modification"],
             )
             guide.ProcessesScheduling.round_robin_time_slice_and_modification(
                 update, context
@@ -34,9 +34,11 @@ def parser(
         else:
             result.ProcessesScheduling.show_processes_execution(update, context, db)
 
-    elif expected_input == cb.PagingBuffer.LOGICAL_ADDRESS_AND_PAGE_SIZE:
+    elif expected_input == data.Paging.EXPECTED_INPUT["logical_address_and_page_size"]:
         # Set excepted input
-        cb.MainBuffer.set_expected_input(context, cb.PagingBuffer.PAGE_FRAME)
+        cb.MainBuffer.set_expected_input(
+            context, data.Paging.EXPECTED_INPUT["page_frame"]
+        )
         # Compute page number and call get_real_address Paging method
         logical_address, page_size = input_.replace(" ", "").split("-")
         cb.PagingBuffer.set_logical_address(context, logical_address)
@@ -45,12 +47,14 @@ def parser(
         page_number = result.Paging.get_page_number(logical_address, page_size)
         guide.Paging.get_real_address(update, context, page_number)
 
-    elif expected_input == cb.PagingBuffer.PAGE_FRAME:
+    elif expected_input == data.Paging.EXPECTED_INPUT["page_frame"]:
         page_frame = int(input_)
         cb.PagingBuffer.set_page_frame(context, page_frame)
         result.Paging.translate_logical_to_real(update, context, db)
+
     elif (
-        expected_input == cb.ProcessesSchedulingBuffer.RR_TIME_SLICE_AND_MODIFICATION_EI
+        expected_input
+        == data.ProcessScheduling.EXPECTED_INPUT["time_slice_and_modification"],
     ):
         input_ = input_.replace(" ", "")
         time_slice, with_modification, modification_change = input_.split("-")
@@ -63,14 +67,14 @@ def parser(
         )
         result.ProcessesScheduling.show_processes_execution(update, context, db)
 
-    elif expected_input == cb.PagingBuffer.FRAME_NUMBER_AND_SIZE:
+    elif expected_input == data.Paging.EXPECTED_INPUT["frame_number_and_size"]:
         input_ = input_.replace(" ", "")
         frame_number, frame_size = input_.split("-")
         cb.PagingBuffer.set_frame_number(context, frame_number)
         cb.PagingBuffer.set_frame_size(context, frame_size)
         result.Paging.real_address_length(update, context, db)
 
-    elif expected_input == cb.PagingBuffer.PAGE_NUMBER_AND_SIZE:
+    elif expected_input == data.Paging.EXPECTED_INPUT["page_number_and_size"]:
         input_ = input_.replace(" ", "")
         page_number, page_size = input_.split("-")
         cb.PagingBuffer.set_page_number(context, page_number)

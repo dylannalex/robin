@@ -2,9 +2,9 @@ import telegram
 import telegram.ext
 from os_utn.tgm import settings
 from os_utn.tgm.response import guide
-from os_utn.tgm.response import parser
-from os_utn.tgm.callback import Callback
+from os_utn.tgm import parser
 from os_utn.database import database
+from os_utn.tgm.callback import handler
 
 
 if settings.MODE == "test":
@@ -31,19 +31,22 @@ def main() -> None:
     dp = updater.dispatcher
     db = database.connect()
 
-    # Commands
-    dp.add_handler(
-        telegram.ext.CommandHandler(
-            "start", lambda update, context: guide.Guide.start(update, context, db)
-        )
-    )
+    # Task Selector
+    dp.add_handler(telegram.ext.CommandHandler("start", guide.Guide.select_task))
+    # Parser
     dp.add_handler(
         telegram.ext.MessageHandler(
             telegram.ext.Filters.text,
             lambda update, context: parser.parser(update, context, db),
         )
     )
-    dp.add_handler(telegram.ext.CallbackQueryHandler(Callback.query_handler))
+    # Query handler
+    dp.add_handler(
+        telegram.ext.CallbackQueryHandler(
+            lambda update, context: handler.query_handler(update, context, db)
+        )
+    )
+
     run(updater)
 
 
