@@ -21,14 +21,6 @@ class Process:
         self.consecutive_executions = 0
         self.wait_time = 0
 
-    def execute(self) -> None:
-        self.current_executions += 1
-
-    def reset(self) -> None:
-        self.finish_time = 0
-        self.current_executions = 0
-        self.wait_time = 0
-
     def has_finished(self) -> bool:
         if self.current_executions == self.total_executions:
             return True
