@@ -15,6 +15,8 @@ class ProcessScheduling:
 
     EXAMPLE = {
         "load_processes": "e_lp",
+        "rr_without_modification_change": "rr_without_mc",
+        "rr_with_modification_change": "rr_with_mc",
         "round_robin_time_slice_and_modification": "e_rrtsm",
     }
 

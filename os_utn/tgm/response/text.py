@@ -139,6 +139,14 @@ LOGICAL_ADDRESS_LENGTH_BUTTON = emojis.NUMBER_3
 # Result:
 SUPPORT_ME_BUTTON = f"Repositorio en GitHub {emojis.GRINNING_CAT_WITH_SMILING_EYES}"
 
+# Examples:
+NEED_AN_EXAMPLE_BUTTON = f"Necesito un ejemplo {emojis.CONFUSED_FACE}"
+RR_WITHOUT_MODIFICATION_CHANGE_EXAMPLE_BUTTON = (
+    f"{emojis.NUMBER_1} Ejemplo sin cambio de modificacion"
+)
+RR_WITH_MODIFICATION_CHANGE_EXAMPLE_BUTTON = (
+    f"{emojis.NUMBER_2} Ejemplo con cambio de modificacion"
+)
 
 #
 # Examples
@@ -153,16 +161,8 @@ Para el ejemplo de la foto de arriba {emojis.UP_POINTING_INDEX}\
 Envíame tus procesos para continuar {emojis.HAPPY_FACE}
 """
 
-RR_TIME_SLICE_AND_MODIFICATION_EXAMPLE = [
-    f"""
-Interpretar estos datos puede resultar muy confuso {emojis.WORRIED_FACE}
-
-A continuación te voy a mandar algunos ejercicios y el mensaje para cargar\
- correctamente el time slice\\, si es "con modificación" o "sin modificación"\
- y sus cambios\\ {emojis.DOWN_POINTING_INDEX}
-""",
-    f"""
-Empecemos por uno sencillo {emojis.COWBOW_HAT_FACE}
+ROUND_ROBIN_WITHOUT_MODIFICATION_CHANGE_EXAMPLE = f"""
+Ejemplo de algoritmo Round Robin sin modificación {emojis.CAT_WITH_WRY_SMILE}
 
 {emojis.BOOKS} Ejercicio\\:
 
@@ -172,21 +172,19 @@ Complete con los valores de acuerdo con la actuación del planificador según el
 
 {emojis.BOOKS} Como cargar los datos\\:
 
-"q \\= 2 ms" significa que el _quantum_ \\(o _time slice_\\) es igual a 2\\.
+El ejercicio nos menciona que "q \\= 2 ms", es decir, que el *quantum* es igual\
+ a 2\\. Como el enunciado no especifica nada más, asumiremos que el algoritmo es\
+ *sin modificación*, y que no hay cambios de modificación\\. 
 
-El ejercicio no nos da ningún dato acerca de si el algoritmo es _con modificación_\
- o _sin modificación_ {emojis.SHRUG}\\.
-En este caso se asume que es _sin modificación_, pero te recomiendo consultar a tu\
- profesor\\/a para asegurarte\\.
 
-Tampoco menciona nada acerca del cambio de modificación\\.
-
-En este caso el mensaje para cargar los datos correctamente es\\:
+{emojis.PUSHPIN} El mensaje para cargar los datos correctamente es\\:
 
 {emojis.PERSON} ``` 2 - 0 - 0```
-""",
-    f"""
-Ahora veamos un ejemplo mas complicado {emojis.COWBOW_HAT_FACE}{emojis.WATER_PISTOL}
+
+Ingrese los datos de su ejercicio {emojis.GRINNING_CAT_WITH_SMILING_EYES}
+"""
+ROUND_ROBIN_WITH_MODIFICATION_CHANGE_EXAMPLE = f"""
+Ejemplo de algoritmo Round Robin con cambio de modificación {emojis.CAT_WITH_WRY_SMILE}
 
 {emojis.BOOKS} Ejercicio\\:
 
@@ -198,32 +196,24 @@ Se tiene un planificador con time slice \\= 1\\. Tenga en cuenta que, a partir d
 
 {emojis.BOOKS} Como cargar los datos\\:
 
-Parece una ensalada de frutas, pero vamos por partes {emojis.SMILING_FACE_WITH_TEAR}\\.
+Lo primero que vemos es que el time slice es igual a 1\\.
 
-Lo primero que vemos es que el time slice es igual a 1\\. Un dato menos\\!
-
-Recordemos que cuando un algoritmo es _con modificación_, si hay dos procesos\
+Recordemos que cuando un algoritmo es *con modificación*, si hay dos procesos\
  simultaneos donde uno de ellos ingresa y otro pasa del estado de ejecución al\
  listo, el que pasa a la cola de listos primero es el proceso que ingresa\\.\
- Cuando un algoritmo es _sin modificación_ el que pasa primero es el proceso\
+ Cuando un algoritmo es *sin modificación* el que pasa primero es el proceso\
  que pasa del estado de ejecución al listo\\.
 
-Sabiendo esto, el texto nos dice que a partir del instante 5 el algoritmo pasa\
- a ser _con modificación_\\. Esto significa que originalmente el algoritmo es\
- _sin modificación_ y cambia a _con modificación_ en el instante 5\\.
+El texto nos dice que a partir del instante 5 el algoritmo pasa a ser\
+ *con modificación*\\. Esto significa que, desde el instante 0, el algoritmo\
+ es *sin modificación*, y cambia a *con modificación* en el instante 5\\.
 
-En este caso el mensaje para cargar los datos correctamente es\\:
+{emojis.PUSHPIN} El mensaje para cargar los datos correctamente es\\:
 
 {emojis.PERSON} ``` 1 - 0 - 5```
 
-Donde el 0 significa que el algoritmo es _sin modificación_ y el 5 significa que\
- pasa a ser _con modificación_ en el instante de tiempo 5\\ {emojis.HAPPY_FACE} 
-""",
-    f"""
-Ahora te toca a vos {emojis.SMILING_FACE_WITH_TEAR}\\. Mandame los datos de tu\
- ejercicio \\(como te mostré arriba {emojis.UP_POINTING_INDEX}\\) para continuar\\!
-""",
-]
+Ingrese los datos de su ejercicio {emojis.GRINNING_CAT_WITH_SMILING_EYES}
+"""
 
 TRANSLATE_LOGICAL_TO_REAL_EXAMPLE = f"""
 Tomemos el siguiente ejercicio como ejemplo {emojis.COWBOW_HAT_FACE}{emojis.DOWN_POINTING_INDEX}

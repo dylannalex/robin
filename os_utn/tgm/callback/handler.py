@@ -93,11 +93,13 @@ class _ProcessSchedulingCallbackHandler(_CallbackHandler):
         if data_ == data.ProcessScheduling.EXAMPLE["load_processes"]:
             example.ProcessesSchedulingExample.load_processes(self.update, self.context)
 
-        if (
-            data_
-            == data.ProcessScheduling.EXAMPLE["round_robin_time_slice_and_modification"]
-        ):
-            example.ProcessesSchedulingExample.round_robin_time_slice_and_modification(
+        if data_ == data.ProcessScheduling.EXAMPLE["rr_without_modification_change"]:
+            example.ProcessesSchedulingExample.round_robin_without_modification_change(
+                self.update, self.context
+            )
+
+        if data_ == data.ProcessScheduling.EXAMPLE["rr_with_modification_change"]:
+            example.ProcessesSchedulingExample.round_robin_with_modification_change(
                 self.update, self.context
             )
 
