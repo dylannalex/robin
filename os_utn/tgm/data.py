@@ -1,7 +1,7 @@
 class TaskSelector:
-    TASK = {
-        "process_scheduling": "t_ps",
-        "paging": "t_p",
+    GUIDE = {
+        "process_scheduling": "g_ps",
+        "paging": "g_p",
     }
 
 

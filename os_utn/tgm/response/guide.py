@@ -22,7 +22,7 @@ class Guide:
             callback_data=callback.Callback.get_callback(
                 callback.CallbackType.GUIDE,
                 callback.CallbackTask.SELECT_TASK,
-                data.TaskSelector.TASK["process_scheduling"],
+                data.TaskSelector.GUIDE["process_scheduling"],
             ),
         )
 
@@ -31,7 +31,7 @@ class Guide:
             callback_data=callback.Callback.get_callback(
                 callback.CallbackType.GUIDE,
                 callback.CallbackTask.SELECT_TASK,
-                data.TaskSelector.TASK["paging"],
+                data.TaskSelector.GUIDE["paging"],
             ),
         )
 
