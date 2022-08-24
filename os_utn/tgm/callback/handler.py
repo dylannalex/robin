@@ -62,6 +62,9 @@ class _TaskSelector(_CallbackHandler):
         if data_ == data.TaskSelector.GUIDE["paging"]:
             guide.Paging.select_task(self.update, self.context)
 
+        if data_ == data.TaskSelector.GUIDE["tasks"]:
+            guide.Guide.select_task(self.update, self.context)
+
     def handle_example_callback(self) -> None:
         pass
 

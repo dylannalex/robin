@@ -1,5 +1,6 @@
 class TaskSelector:
     GUIDE = {
+        "tasks": "g_t",
         "process_scheduling": "g_ps",
         "paging": "g_p",
     }
