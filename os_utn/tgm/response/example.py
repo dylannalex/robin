@@ -1,5 +1,4 @@
 import os
-import time
 import telegram
 import telegram.ext
 from os_utn.tgm.response import text
@@ -33,17 +32,25 @@ class ProcessesSchedulingExample:
             chat_id=chat_id,
         )
 
-    def round_robin_time_slice_and_modification(
+    def round_robin_without_modification_change(
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
         chat_id = update.effective_user["id"]
-        for message in text.RR_TIME_SLICE_AND_MODIFICATION_EXAMPLE:
-            context.bot.sendMessage(
-                parse_mode="MarkdownV2",
-                text=message,
-                chat_id=chat_id,
-            )
-            time.sleep(3)
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.ROUND_ROBIN_WITHOUT_MODIFICATION_CHANGE_EXAMPLE,
+            chat_id=chat_id,
+        )
+
+    def round_robin_with_modification_change(
+        update: telegram.Update, context: telegram.ext.CallbackContext
+    ):
+        chat_id = update.effective_user["id"]
+        context.bot.sendMessage(
+            parse_mode="MarkdownV2",
+            text=text.ROUND_ROBIN_WITH_MODIFICATION_CHANGE_EXAMPLE,
+            chat_id=chat_id,
+        )
 
 
 class PagingExample:

@@ -14,6 +14,7 @@ from os_utn.database import settings as db_settings
 from os_utn.tgm import context_buffer as cb
 from os_utn.tgm.response import text
 from os_utn.tgm import data
+from os_utn.tgm.callback import callback
 
 from os_utn.operating_system.processes import process
 from os_utn.operating_system.processes import scheduler
@@ -40,16 +41,34 @@ def send_result_messages(
             chat_id=update.effective_user["id"],
         )
 
+    select_task_button = telegram.InlineKeyboardButton(
+        text=text.BACK_TO_SELECT_TASK_BUTTON,
+        callback_data=callback.Callback.get_callback(
+            callback.CallbackType.GUIDE,
+            callback.CallbackTask.SELECT_TASK,
+            data.TaskSelector.GUIDE["tasks"],
+        ),
+    )
+
     support_me_button = telegram.InlineKeyboardButton(
         text=text.SUPPORT_ME_BUTTON, url=repo_settings.GITHUB_REPO_LINK
     )
 
-    # Send 'support me' message
+    report_a_bug_button = telegram.InlineKeyboardButton(
+        text=text.REPORT_A_BUG_BUTTON, url=repo_settings.GITHUB_REPO_ISSUES
+    )
+
     context.bot.sendMessage(
         parse_mode="MarkdownV2",
         text=text.SUPPORT_ME_MESSAGE,
         chat_id=update.effective_user["id"],
-        reply_markup=telegram.InlineKeyboardMarkup([[support_me_button]]),
+        reply_markup=telegram.InlineKeyboardMarkup(
+            [
+                [support_me_button],
+                [report_a_bug_button],
+                [select_task_button],
+            ]
+        ),
     )
 
     # Save task log

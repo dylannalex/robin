@@ -55,12 +55,15 @@ class _TaskSelector(_CallbackHandler):
         # Set current time
         cb.DatabaseBuffer.set_task_start_time(self.context)
 
-        if data_ == data.TaskSelector.TASK["process_scheduling"]:
+        if data_ == data.TaskSelector.GUIDE["process_scheduling"]:
             guide.ProcessesScheduling.select_processes_scheduling_algorithm(
                 self.update, self.context
             )
-        if data_ == data.TaskSelector.TASK["paging"]:
+        if data_ == data.TaskSelector.GUIDE["paging"]:
             guide.Paging.select_task(self.update, self.context)
+
+        if data_ == data.TaskSelector.GUIDE["tasks"]:
+            guide.Guide.select_task(self.update, self.context)
 
     def handle_example_callback(self) -> None:
         pass
@@ -93,11 +96,13 @@ class _ProcessSchedulingCallbackHandler(_CallbackHandler):
         if data_ == data.ProcessScheduling.EXAMPLE["load_processes"]:
             example.ProcessesSchedulingExample.load_processes(self.update, self.context)
 
-        if (
-            data_
-            == data.ProcessScheduling.EXAMPLE["round_robin_time_slice_and_modification"]
-        ):
-            example.ProcessesSchedulingExample.round_robin_time_slice_and_modification(
+        if data_ == data.ProcessScheduling.EXAMPLE["rr_without_modification_change"]:
+            example.ProcessesSchedulingExample.round_robin_without_modification_change(
+                self.update, self.context
+            )
+
+        if data_ == data.ProcessScheduling.EXAMPLE["rr_with_modification_change"]:
+            example.ProcessesSchedulingExample.round_robin_with_modification_change(
                 self.update, self.context
             )
 

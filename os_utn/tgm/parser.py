@@ -54,7 +54,7 @@ def parser(
 
     elif (
         expected_input
-        == data.ProcessScheduling.EXPECTED_INPUT["time_slice_and_modification"],
+        == data.ProcessScheduling.EXPECTED_INPUT["time_slice_and_modification"]
     ):
         input_ = input_.replace(" ", "")
         time_slice, with_modification, modification_change = input_.split("-")

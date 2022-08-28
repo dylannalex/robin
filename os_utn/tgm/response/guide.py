@@ -22,7 +22,7 @@ class Guide:
             callback_data=callback.Callback.get_callback(
                 callback.CallbackType.GUIDE,
                 callback.CallbackTask.SELECT_TASK,
-                data.TaskSelector.TASK["process_scheduling"],
+                data.TaskSelector.GUIDE["process_scheduling"],
             ),
         )
 
@@ -31,7 +31,7 @@ class Guide:
             callback_data=callback.Callback.get_callback(
                 callback.CallbackType.GUIDE,
                 callback.CallbackTask.SELECT_TASK,
-                data.TaskSelector.TASK["paging"],
+                data.TaskSelector.GUIDE["paging"],
             ),
         )
 
@@ -115,9 +115,21 @@ class ProcessesScheduling:
     def round_robin_time_slice_and_modification(
         update: telegram.Update, context: telegram.ext.CallbackContext
     ):
-        example_button = example.ExampleButton(
-            callback.CallbackTask.PROCESSES_SCHEDULING,
-            data.ProcessScheduling.EXAMPLE["round_robin_time_slice_and_modification"],
+        example_without_modification_change_button = telegram.InlineKeyboardButton(
+            text=text.RR_WITHOUT_MODIFICATION_CHANGE_EXAMPLE_BUTTON,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.EXAMPLE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.EXAMPLE["rr_without_modification_change"],
+            ),
+        )
+        example_with_modification_change_button = telegram.InlineKeyboardButton(
+            text=text.RR_WITH_MODIFICATION_CHANGE_EXAMPLE_BUTTON,
+            callback_data=callback.Callback.get_callback(
+                callback.CallbackType.EXAMPLE,
+                callback.CallbackTask.PROCESSES_SCHEDULING,
+                data.ProcessScheduling.EXAMPLE["rr_with_modification_change"],
+            ),
         )
 
         chat_id = update.effective_user["id"]
@@ -126,7 +138,12 @@ class ProcessesScheduling:
             parse_mode="MarkdownV2",
             text=text.RR_TIME_SLICE_AND_MODIFICATION,
             chat_id=chat_id,
-            reply_markup=telegram.InlineKeyboardMarkup([[example_button]]),
+            reply_markup=telegram.InlineKeyboardMarkup(
+                [
+                    [example_without_modification_change_button],
+                    [example_with_modification_change_button],
+                ]
+            ),
         )
 
 
