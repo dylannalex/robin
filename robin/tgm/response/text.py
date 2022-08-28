@@ -3,8 +3,8 @@ This file contains the text the bot will use for buttons
 and dialogs.
 """
 
-from os_utn.tgm.message import emojis
-from os_utn.tgm.message import markdown_validation
+from robin.tgm.message import emojis
+from robin.tgm.message import markdown_validation
 
 
 ############################

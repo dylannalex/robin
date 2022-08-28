@@ -5,10 +5,10 @@ tasks.
 
 import telegram
 import telegram.ext
-from os_utn.tgm.response import text
-from os_utn.tgm.callback import callback
-from os_utn.tgm import data
-from os_utn.tgm.response import example
+from robin.tgm.response import text
+from robin.tgm.callback import callback
+from robin.tgm import data
+from robin.tgm.response import example
 
 
 class Guide:

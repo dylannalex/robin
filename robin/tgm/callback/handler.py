@@ -1,14 +1,14 @@
 import telegram
 import telegram.ext
 
-from os_utn.database import database
+from robin.database import database
 from mysql.connector.connection_cext import CMySQLConnection
 
-from os_utn.tgm.response import guide
-from os_utn.tgm.response import example
-from os_utn.tgm import data
-from os_utn.tgm import context_buffer as cb
-from os_utn.tgm.callback import callback
+from robin.tgm.response import guide
+from robin.tgm.response import example
+from robin.tgm import data
+from robin.tgm import context_buffer as cb
+from robin.tgm.callback import callback
 
 
 from abc import ABC

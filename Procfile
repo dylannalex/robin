@@ -1,1 +1,1 @@
-web: python -m os_utn.tgm
+web: python -m robin.tgm

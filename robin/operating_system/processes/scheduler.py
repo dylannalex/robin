@@ -1,4 +1,4 @@
-from os_utn.operating_system.processes import process
+from robin.operating_system.processes import process
 
 
 class ExecutionsTable:

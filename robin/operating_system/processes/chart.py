@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from os_utn.operating_system.processes import scheduler
+from robin.operating_system.processes import scheduler
 
 
 PROCESS_RUNNING_COLOR = "#8E65FF"

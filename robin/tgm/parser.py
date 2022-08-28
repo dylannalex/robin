@@ -1,9 +1,9 @@
 import telegram
 import telegram.ext
-from os_utn.tgm import data
-from os_utn.tgm.response import guide
-from os_utn.tgm.response import result
-from os_utn.tgm import context_buffer as cb
+from robin.tgm import data
+from robin.tgm.response import guide
+from robin.tgm.response import result
+from robin.tgm import context_buffer as cb
 
 from mysql.connector.connection_cext import CMySQLConnection
 

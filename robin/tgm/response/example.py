@@ -1,8 +1,8 @@
 import os
 import telegram
 import telegram.ext
-from os_utn.tgm.response import text
-from os_utn.tgm.callback import callback
+from robin.tgm.response import text
+from robin.tgm.callback import callback
 
 
 class ExampleButton(telegram.InlineKeyboardButton):
@@ -17,7 +17,7 @@ class ExampleButton(telegram.InlineKeyboardButton):
 
 class ProcessesSchedulingExample:
     PROCESSES_TABLE_IMG_PATH = os.path.abspath(
-        "./os_utn/tgm/img/processes-table-example.png"
+        "./robin/tgm/img/processes-table-example.png"
     )
 
     def load_processes(update: telegram.Update, context: telegram.ext.CallbackContext):
@@ -54,7 +54,7 @@ class ProcessesSchedulingExample:
 
 
 class PagingExample:
-    PAGING_TABLE_IMG_PATH = os.path.abspath("./os_utn/tgm/img/paging-table-example.png")
+    PAGING_TABLE_IMG_PATH = os.path.abspath("./robin/tgm/img/paging-table-example.png")
 
     def translate_logical_to_real(
         update: telegram.Update, context: telegram.ext.CallbackContext

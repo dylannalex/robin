@@ -1,5 +1,5 @@
 import os
-from os_utn.database import database
+from robin.database import database
 from mysql.connector.connection_cext import CMySQLConnection
 
 

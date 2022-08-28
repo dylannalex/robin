@@ -1,10 +1,10 @@
 import telegram
 import telegram.ext
-from os_utn.tgm import settings
-from os_utn.tgm.response import guide
-from os_utn.tgm import parser
-from os_utn.database import database
-from os_utn.tgm.callback import handler
+from robin.tgm import settings
+from robin.tgm.response import guide
+from robin.tgm import parser
+from robin.database import database
+from robin.tgm.callback import handler
 
 
 if settings.MODE == "test":

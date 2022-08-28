@@ -8,20 +8,20 @@ import telegram
 import telegram.ext
 from datetime import datetime
 
-from os_utn.database import database
-from os_utn.database import settings as db_settings
+from robin.database import database
+from robin.database import settings as db_settings
 
-from os_utn.tgm import context_buffer as cb
-from os_utn.tgm.response import text
-from os_utn.tgm import data
-from os_utn.tgm.callback import callback
+from robin.tgm import context_buffer as cb
+from robin.tgm.response import text
+from robin.tgm import data
+from robin.tgm.callback import callback
 
-from os_utn.operating_system.processes import process
-from os_utn.operating_system.processes import scheduler
-from os_utn.operating_system.processes import chart
-from os_utn.operating_system.tools import units_converter
-from os_utn.operating_system.memory import paging
-from os_utn import settings as repo_settings
+from robin.operating_system.processes import process
+from robin.operating_system.processes import scheduler
+from robin.operating_system.processes import chart
+from robin.operating_system.tools import units_converter
+from robin.operating_system.memory import paging
+from robin import settings as repo_settings
 
 from mysql.connector.connection_cext import CMySQLConnection
 
@@ -84,7 +84,7 @@ def send_result_messages(
 
 class ProcessesScheduling:
     def _get_plot_path(user_id: str):
-        return os.path.abspath(f"./os_utn/tgm/img/{user_id}.png")
+        return os.path.abspath(f"./robin/tgm/img/{user_id}.png")
 
     def show_processes_execution(
         update: telegram.Update,

@@ -1,6 +1,6 @@
 import mysql.connector
 from urllib.parse import urlparse
-from os_utn.settings import CLEARDB_DATABASE_URL
+from robin.settings import CLEARDB_DATABASE_URL
 from datetime import datetime
 
 from mysql.connector.connection_cext import CMySQLConnection

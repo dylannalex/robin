@@ -1,7 +1,7 @@
 from os import system
-from os_utn.menu import io_menu
-from os_utn.menu import memory_menu
-from os_utn.menu import processes_menu
+from robin.menu import io_menu
+from robin.menu import memory_menu
+from robin.menu import processes_menu
 
 
 def is_int(input_: str):
