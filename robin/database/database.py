@@ -32,6 +32,13 @@ def database_access(function: Callable):
                 return function(db, *args)
             except OperationalError:
                 db.reconnect()
+            except Exception as exception:
+                print(
+                    f"[DATABASE] Could not run function {function.__name__}",
+                    f"Error: {exception}",
+                    sep="\n",
+                )
+                return
 
     return wrapper
 
